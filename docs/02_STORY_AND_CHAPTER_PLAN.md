@@ -12,6 +12,8 @@ As they travel, the domains fall into distrust. Void Domain is blamed for disast
 
 The truth is that Zoroark, Arcanine, and Houndoom are causing the chaos. Zoroark frames Dusknoir and the Void Domain through illusions. The trio intends to summon Darkrai, Yveltal, and Giratina at the Tower of Legends.
 
+Arcanine's motive is delusional purification. He saw the evil in others and now believes the world must be restarted anew. Houndoom wants chaos and cooperates because their goals align. Zoroark is the most manipulative of the trio and wants to use everyone.
+
 ## Protagonist Backstory
 
 Working version:
@@ -90,16 +92,24 @@ Foreshadowing:
 - Team Apex appears and earns attention through aggressive methods.
 - The partner initially rejects Team Apex's behavior.
 
-### Act 3: Domain Pilgrimage
+### Act 3: Storm Domain
 
-- The protagonists travel between domains.
+- The first full domain arc after the prologue is Storm.
+- Luxray is the Storm Living Legend.
+- The domain conflict should be energetic, public, and dangerous enough to show why domain unrest matters.
+- This arc should introduce larger-scale Renown, Team Apex pressure, and the first serious case where Void Domain appears guilty.
+
+### Act 4: Domain Pilgrimage
+
+- The protagonists travel between additional domains.
 - Each domain has a main conflict, a Living Legend, and optional quests.
 - The domains begin blaming one another for disasters.
 - Void Domain becomes a common scapegoat.
 - Zoroark's illusions create false evidence.
 - Dusknoir appears suspicious but consistently avoids open cruelty.
+- Dusknoir repeatedly tries to clear his own name and warn others about Arcanine, but the public trusts Arcanine and fears Dusknoir.
 
-### Act 4: Apex Pressure
+### Act 5: Apex Pressure
 
 - Team Apex gains fame faster.
 - The partner becomes frustrated by slow, ethical progress.
@@ -107,14 +117,14 @@ Foreshadowing:
 - Arcanine continues to act as a mentor figure.
 - Houndoom and Zoroark appear indirectly through domain crises.
 
-### Act 5: The Void Accusation
+### Act 6: The Void Accusation
 
 - Evidence appears to prove Dusknoir is behind the chaos.
 - Domains prepare for open conflict.
 - The protagonist and partner climb toward the Tower of Legends to stop Dusknoir.
 - Team Apex may interfere, assist, or crumble depending on prior choices.
 
-### Act 6: Tower of Legends
+### Act 7: Tower of Legends
 
 - The player climbs the tallest dungeon.
 - The partner is tempted to take a shortcut or make a morally compromised choice.
@@ -123,7 +133,7 @@ Foreshadowing:
 - Arcanine and Houndoom reveal themselves.
 - The protagonist and partner battle the villain trio.
 
-### Act 7: The Forced Summoning
+### Act 8: The Forced Summoning
 
 - The summoning completes despite the trio's defeat.
 - Darkrai, Yveltal, and Giratina are summoned against their will.
@@ -134,7 +144,7 @@ Foreshadowing:
 - The First Legends are unsummoned.
 - The protagonist appears dead.
 
-### Act 8: Blessing of Legends
+### Act 9: Blessing of Legends
 
 - Everyone mourns.
 - Flashbacks replay the protagonist's quiet good actions.
@@ -160,4 +170,3 @@ Possible postgame focuses:
 - pursue grandmaster skill ranks,
 - unlock alternate Mantle trials,
 - reveal why Arceus answered the final summon.
-

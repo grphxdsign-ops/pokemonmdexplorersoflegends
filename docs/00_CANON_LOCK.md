@@ -31,6 +31,7 @@ Notes:
 - Species spelling normalized for documentation: Orbeetle, Lilligant, and Froslass.
 - Living Legends are not the original gods. They are successors in a long inheritance chain.
 - The current timeline is far enough in the future that many successors have carried each Mantle over time.
+- The first full domain arc after the prologue is Storm.
 
 ## Living Legends and Guildmasters
 
@@ -113,6 +114,8 @@ Truth:
 
 Dusknoir is innocent.
 
+Dusknoir repeatedly tries to clear his own name. He also tries to drag Arcanine's name into suspicion during early interactions, but almost no one believes him because Arcanine is trusted and Dusknoir looks frightening, rules a feared domain, and is already easy for the public to blame.
+
 The true villain trio is:
 
 | Domain | Villain |
@@ -126,6 +129,12 @@ Zoroark uses disguise and illusion to frame Dusknoir and the Void Domain. Arcani
 Their goal:
 
 Summon the original worshipped First Legends tied to Nightmare, Death, and Void, bringing ancient chaos back into the world and proving that the age of inherited successors should end.
+
+Villain motivations:
+
+- Arcanine is delusional. He saw the evil in others and now wants to restart the world anew by purging it.
+- Houndoom wants the world thrown into chaos and works with Arcanine because their goals align.
+- Zoroark is highly manipulative and wants to use everyone, including allies, enemies, domains, Team Apex, and public fear.
 
 The summoned First Legends are:
 
@@ -147,7 +156,7 @@ Early story role:
 
 Late story truth:
 
-Arcanine is part of the villain trio. Their public heroism is real enough to be believable, but it is also curated. They believe the world has grown weak under inherited Mantles and that only the return of true First Legends can restore awe, fear, and meaning.
+Arcanine is part of the villain trio. His public heroism is real enough to be believable, but it is also curated. He is delusional rather than merely selfish: after seeing evil in others, he concluded that the current world is too compromised to save and must be purged so it can begin again.
 
 ## Void Domain Framing
 
@@ -160,6 +169,7 @@ This should create a long suspicion arc:
 - Domains blame Void for growing unrest.
 - Team Apex uses the suspicion to gain easy popularity.
 - Dusknoir becomes isolated, defensive, and hard to trust.
+- Dusknoir tries to defend himself and point suspicion toward Arcanine, but this backfires because the world trusts Arcanine's heroic image and fears Dusknoir's appearance and domain.
 
 Twist:
 
@@ -213,4 +223,3 @@ They praise the protagonist:
 The three vanish. The protagonist rises. Everyone celebrates and returns home.
 
 This is the end of the main game. Postgame starts from here.
-
