@@ -187,11 +187,30 @@ Arcanine:
 
 Arcanine saves the protagonist and partner from Luxray. This should feel heroic and convincing, but it is also a calculated trust-building move because Arcanine was behind Luxray's corruption.
 
+## Interview Policy Update
+
+Do not interview the user on every small story gap.
+
+The assistant should autonomously craft:
+
+- minor NPCs,
+- scene ordering,
+- dungeon names,
+- local town details,
+- specific false clues,
+- optional quest hooks,
+- dialogue beats,
+- foreshadowing details,
+- most Storm Domain incident mechanics.
+
+Only ask the user for true canon questions that change the direction of the game.
+
+See `docs/06_STORY_CRAFTING_PROTOCOL.md`.
+
 ## Interview Round 3 Questions
 
-1. What are Banette and Porygon like: loyal to Dusknoir, framed by Zoroark, corrupted, coerced, or actually traitorous?
-2. What is the dark force affecting Luxray: nightmare corruption, death energy, illusion, poisoned water, or something else?
-3. Should Luxray remember what happened after he is saved, or be confused and ashamed?
-4. Does Arcanine personally fight Luxray, calm him, or create an opening for everyone to escape?
-5. What role should Team Apex play in the Storm arc if they are not cheating: rival rescuers, brutal problem-solvers, public favorites, or background pressure?
-6. Which domain should follow Storm: Seed, Dream, Land, or Sea?
+These are the next true questions only:
+
+1. Should the partner species be fixed for the story, or should the partner stay quiz/customizable?
+2. Which domain should follow Storm: Seed, Dream, Land, or Sea?
+3. Should Team Apex eventually be redeemable, or should they remain antagonists all the way through the main story?
