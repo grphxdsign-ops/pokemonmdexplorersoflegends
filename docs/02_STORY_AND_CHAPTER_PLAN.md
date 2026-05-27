@@ -8,6 +8,8 @@ Living Legends now lead the domains as guildmaster-equivalents. They are respect
 
 The protagonist and partner start as ordinary Pokemon with ordinary lives. They are inspired by Arcanine, the Sun Living Legend, after he saves them from a dungeon. They begin a journey to earn Renown and become legends.
 
+The game begins with a PMD-style personality quiz. After the quiz, the player chooses the partner at the start. The partner species can vary, but the partner's personality arc remains fixed.
+
 As they travel, the domains fall into distrust. Void Domain is blamed for disasters, Team Apex gains fame through shortcuts, and the partner slowly becomes tempted by the idea that being remembered may matter more than doing things properly.
 
 The truth is that Zoroark, Arcanine, and Houndoom are causing the chaos. Zoroark frames Dusknoir and the Void Domain through illusions. The trio intends to summon Darkrai, Yveltal, and Giratina at the Tower of Legends.
@@ -111,7 +113,19 @@ Detailed autonomous draft: `docs/07_STORM_DOMAIN_STORY_PASS.md`
 - The rescue is secretly a ploy because Arcanine helped set up Luxray's corruption.
 - This arc does not teach a clean domain lesson. Its purpose is to make the protagonist and partner begin suspecting Void Domain and Dusknoir.
 
-### Act 4: Domain Pilgrimage
+### Act 4: Dream Domain
+
+Detailed autonomous draft: `docs/08_DREAM_DOMAIN_STORY_PASS.md`
+
+- Dream Domain follows Storm.
+- Musharna is the Dream Living Legend.
+- Musharna often falls asleep during dialogue.
+- At first, this should read as odd and slightly funny.
+- Over time, the player learns Musharna's sudden sleep episodes are how Dream Domain perceives truths that waking minds miss.
+- Dream Domain follows up on the nightmare-laced distortion residue from Storm.
+- The arc should deepen suspicion and mystery, not solve the Dusknoir frame-up too early.
+
+### Act 5: Domain Pilgrimage
 
 - The protagonists travel between additional domains.
 - Each domain has a main conflict, a Living Legend, and optional quests.
@@ -121,22 +135,24 @@ Detailed autonomous draft: `docs/07_STORM_DOMAIN_STORY_PASS.md`
 - Dusknoir appears suspicious but consistently avoids open cruelty.
 - Dusknoir repeatedly tries to clear his own name and warn others about Arcanine, but the public trusts Arcanine and fears Dusknoir.
 
-### Act 5: Apex Pressure
+### Act 6: Apex Pressure
 
 - Team Apex gains fame faster.
 - The partner becomes frustrated by slow, ethical progress.
 - Optional choices can either steady or worsen the partner's moral drift.
 - Arcanine continues to act as a mentor figure.
 - Houndoom and Zoroark appear indirectly through domain crises.
+- Team Apex's ruthless pursuit of legendary status eventually leads them to accept Void corruption.
+- After the protagonist and partner defeat the corrupted Team Apex, their redemption begins.
 
-### Act 6: The Void Accusation
+### Act 7: The Void Accusation
 
 - Evidence appears to prove Dusknoir is behind the chaos.
 - Domains prepare for open conflict.
 - The protagonist and partner climb toward the Tower of Legends to stop Dusknoir.
 - Team Apex may interfere, assist, or crumble depending on prior choices.
 
-### Act 7: Tower of Legends
+### Act 8: Tower of Legends
 
 - The player climbs the tallest dungeon.
 - The partner is tempted to take a shortcut or make a morally compromised choice.
@@ -145,7 +161,7 @@ Detailed autonomous draft: `docs/07_STORM_DOMAIN_STORY_PASS.md`
 - Arcanine and Houndoom reveal themselves.
 - The protagonist and partner battle the villain trio.
 
-### Act 8: The Forced Summoning
+### Act 9: The Forced Summoning
 
 - The summoning completes despite the trio's defeat.
 - Darkrai, Yveltal, and Giratina are summoned against their will.
@@ -156,7 +172,7 @@ Detailed autonomous draft: `docs/07_STORM_DOMAIN_STORY_PASS.md`
 - The First Legends are unsummoned.
 - The protagonist appears dead.
 
-### Act 9: Blessing of Legends
+### Act 10: Blessing of Legends
 
 - Everyone mourns.
 - Flashbacks replay the protagonist's quiet good actions.

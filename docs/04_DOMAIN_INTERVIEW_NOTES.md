@@ -13,7 +13,7 @@ Use this file for interviews and design passes.
 | Sky | Corviknight | Needs user interview |
 | Seed | Lilligant | Needs user interview |
 | Land | Torterra | Needs user interview |
-| Dream | Musharna | Needs user interview |
+| Dream | Musharna | Round 3 answered |
 | Storm | Luxray | Round 2 answered |
 | Life | Blissey | Needs user interview |
 | Death | Houndoom | Round 1 answered |
@@ -214,3 +214,42 @@ These are the next true questions only:
 1. Should the partner species be fixed for the story, or should the partner stay quiz/customizable?
 2. Which domain should follow Storm: Seed, Dream, Land, or Sea?
 3. Should Team Apex eventually be redeemable, or should they remain antagonists all the way through the main story?
+
+## Interview Round 3 Answers
+
+1. The partner is chosen at the start after the quiz.
+2. Dream follows Storm.
+3. Musharna often falls asleep during dialogue.
+4. Team Apex decides to give into Void corruption at one point in the story. After being defeated, they begin to redeem themselves.
+
+## Round 3 Story Locks
+
+Partner selection:
+
+- The game begins with a PMD-style personality quiz.
+- After the quiz, the player chooses the partner.
+- The partner's species can vary.
+- The partner's personality and arc remain fixed.
+
+Dream Domain:
+
+- Dream is the second full domain arc after Storm.
+- Musharna is the Dream Living Legend.
+- Musharna's habit of falling asleep during dialogue is canon.
+- The sleep gag should become narratively useful because Musharna can perceive truths through dreams.
+
+Team Apex:
+
+- Team Apex eventually gives into Void corruption.
+- This should happen after multiple arcs of ruthless ambition, not immediately.
+- The protagonist and partner defeat them.
+- Redemption begins after defeat.
+- Redemption should require consequences rather than instant forgiveness.
+
+## Interview Round 4 Questions
+
+Only true direction questions:
+
+1. Which domain should follow Dream: Seed, Land, Sea, Moon, or Frozen?
+2. Should Team Apex's leader survive into postgame as an ally/rival, or should only some members continue redeeming themselves?
+3. Should the partner selection pool match the protagonist starter pool exactly, or should partner options be a smaller curated list?

@@ -169,6 +169,37 @@ Review focus:
 - Whether Arcanine's staged rescue remains subtle.
 - Whether the false clue against Void is believable.
 
+### PR 2D: Dream, partner, and Team Apex round 3
+
+Branch:
+
+```text
+codex/dream-partner-apex-round-3
+```
+
+Status: prepared locally after Round 3 answers.
+
+Base branch:
+
+```text
+codex/story-autonomy-pass
+```
+
+Scope:
+
+- Lock partner selection after the quiz.
+- Lock Dream as the domain after Storm.
+- Lock Musharna's dialogue sleep habit.
+- Lock Team Apex's later Void-corruption fall and redemption start.
+- Add autonomous Dream Domain story pass.
+
+Review focus:
+
+- Whether partner species flexibility can coexist with fixed partner personality.
+- Whether Dream Domain works as a mystery-deepening follow-up to Storm.
+- Whether Musharna's sleep habit is funny without undercutting authority.
+- Whether Team Apex's eventual redemption path has enough consequence.
+
 ### PR 3: Progression data prototype
 
 Branch:

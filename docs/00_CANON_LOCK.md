@@ -32,6 +32,9 @@ Notes:
 - Living Legends are not the original gods. They are successors in a long inheritance chain.
 - The current timeline is far enough in the future that many successors have carried each Mantle over time.
 - The first full domain arc after the prologue is Storm.
+- The second full domain arc after Storm is Dream.
+- The partner is chosen at the start after the personality quiz.
+- Team Apex eventually gives into Void corruption. After they are defeated, they begin redeeming themselves.
 
 ## First Full Domain Arc: Storm
 
@@ -53,6 +56,44 @@ Locked details:
 - Arcanine saves the protagonist and partner from Luxray because Luxray is too strong for them.
 - Arcanine's rescue is a trust-building ploy, because Arcanine helped create the Luxray corruption in the first place.
 - Storm Domain is not a lesson arc. Its story function is to escalate suspicion toward Void Domain and Dusknoir.
+
+## Second Full Domain Arc: Dream
+
+Dream Domain follows Storm.
+
+Detailed autonomous draft: `docs/08_DREAM_DOMAIN_STORY_PASS.md`
+
+Locked details:
+
+- Living Legend: Musharna.
+- Musharna often falls asleep during dialogue.
+- The sleeping habit should be characterful, funny at first, and useful to the mystery.
+- Dream Domain should follow up on the nightmare-laced residue from Storm.
+- Dream Domain should deepen the mystery around Nightmare, Void, and false evidence rather than fully clearing Dusknoir.
+
+## Starter and Partner Selection
+
+The game begins with a classic PMD-style personality quiz.
+
+After the quiz determines or suggests the protagonist, the player chooses their partner at the start.
+
+Design lock:
+
+- Partner species is not a single fixed story species.
+- Partner personality is fixed: ambitious, headstrong, emotional, morally grounded at first.
+- Partner species should be selectable from the approved starter pool.
+- Story scenes should still focus on only the protagonist and partner.
+
+## Team Apex Redemption Path
+
+Team Apex remains ruthless and antagonistic for much of the main story, but they are not doomed to stay villains.
+
+Locked direction:
+
+- Team Apex eventually gives into Void corruption at a major point in the story.
+- Their corruption is partly their own fault because they seek power and status too aggressively.
+- After being defeated, they begin a redemption arc.
+- Their redemption should not erase harm they caused. It should begin with humility, consequences, and a willingness to help without receiving immediate praise.
 
 ## Living Legends and Guildmasters
 
