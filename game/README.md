@@ -32,4 +32,4 @@ No PMDO install, Quest package, dev mode, or external build step is required.
 
 ## Art Direction
 
-The loading screen and game view use code-built, low-detail shapes to avoid the over-rendered AI image look. The title treatment is PMD-inspired with chunky outlined lettering, yellow-blue primary branding, and a blue-gold subtitle plaque, while staying custom for this project.
+The loading screen and game view use code-built, low-detail shapes to avoid the over-rendered AI image look. The title treatment follows the PMD Origins-style stack: yellow-blue top wordmark, jagged green/white Mystery Dungeon backing, and a white-green-gold subtitle line for Explorers of Legends.

@@ -492,6 +492,34 @@
     const w = canvas.width;
     const h = canvas.height;
     const sky = ctx.createLinearGradient(0, 0, 0, h);
+    sky.addColorStop(0, "#2074f0");
+    sky.addColorStop(.44, "#268cff");
+    sky.addColorStop(1, "#6aa8ef");
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, w, h);
+
+    drawCloud(105, 275, 1.08);
+    drawCloud(760, 292, 1.28);
+    drawCloud(690, 180, .58);
+    drawCloud(520, 205, .5);
+    drawSunburst(478, 277, 54);
+
+    drawDistantCliff();
+    drawAncientArch(482, 333, 1.12);
+    drawTitleTrail();
+
+    drawSimpleToken(244, 462, 33, "#5dbb6b", "#245f39", "leaf");
+    drawSimpleToken(303, 464, 33, "#f28a38", "#a33a18", "flame");
+    drawSimpleToken(360, 461, 32, "#f7cf3d", "#7d5a16", "spark");
+
+    drawCloud(382, 496, 1.45);
+    drawCloud(718, 512, 1.7);
+  }
+
+  function drawHubBackground() {
+    const w = canvas.width;
+    const h = canvas.height;
+    const sky = ctx.createLinearGradient(0, 0, 0, h);
     sky.addColorStop(0, "#75d4ff");
     sky.addColorStop(.55, "#b6ebff");
     sky.addColorStop(.56, "#7bd563");
@@ -508,20 +536,6 @@
     ctx.fillStyle = "#4aa052";
     roundedHill(420, 430, 620, 170);
 
-    ctx.fillStyle = "#596778";
-    roundRect(620, 300, 170, 170, 22);
-    ctx.fill();
-    ctx.fillStyle = "#23304a";
-    roundRect(658, 348, 94, 122, 34);
-    ctx.fill();
-    ctx.strokeStyle = "#f5ce68";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(660, 354, 90, 8);
-
-    drawSimpleToken(220, 455, 36, "#5dbb6b", "#245f39", "leaf");
-    drawSimpleToken(282, 458, 34, "#f28a38", "#a33a18", "flame");
-    drawSimpleToken(344, 454, 34, "#f7cf3d", "#7d5a16", "spark");
-
     ctx.fillStyle = "rgba(12, 44, 88, .16)";
     ctx.fillRect(0, 590, w, 50);
     for (let x = 0; x < w; x += 48) {
@@ -530,7 +544,7 @@
   }
 
   function drawHub() {
-    drawTitleBackground();
+    drawHubBackground();
     drawGroundGrid();
     drawBuilding(110, 118, "Request Board");
     drawBuilding(450, 215, "Lowstep");
@@ -725,6 +739,90 @@
     ctx.arc(x + 80 * scale, y, 30 * scale, 0, Math.PI * 2);
     ctx.rect(x - 10 * scale, y, 104 * scale, 34 * scale);
     ctx.fill();
+  }
+
+  function drawSunburst(x, y, radius) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.strokeStyle = "rgba(255, 255, 255, .78)";
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 18; i += 1) {
+      ctx.rotate(Math.PI / 9);
+      ctx.beginPath();
+      ctx.moveTo(radius * .42, 0);
+      ctx.lineTo(radius * 1.55, 0);
+      ctx.stroke();
+    }
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+    glow.addColorStop(0, "rgba(255, 255, 255, .95)");
+    glow.addColorStop(.45, "rgba(255, 245, 157, .82)");
+    glow.addColorStop(1, "rgba(255, 245, 157, 0)");
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawDistantCliff() {
+    ctx.fillStyle = "#77c968";
+    ctx.beginPath();
+    ctx.moveTo(0, 472);
+    ctx.quadraticCurveTo(200, 408, 395, 432);
+    ctx.quadraticCurveTo(560, 444, 716, 408);
+    ctx.quadraticCurveTo(850, 432, 960, 410);
+    ctx.lineTo(960, 640);
+    ctx.lineTo(0, 640);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = "#4ea85a";
+    ctx.beginPath();
+    ctx.moveTo(0, 530);
+    ctx.quadraticCurveTo(238, 492, 430, 526);
+    ctx.quadraticCurveTo(602, 555, 812, 500);
+    ctx.quadraticCurveTo(898, 486, 960, 502);
+    ctx.lineTo(960, 640);
+    ctx.lineTo(0, 640);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawAncientArch(x, y, scale) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = "#617385";
+    roundRect(-82, -116, 164, 172, 20);
+    ctx.fill();
+    ctx.fillStyle = "#344457";
+    roundRect(-48, -70, 96, 126, 33);
+    ctx.fill();
+    ctx.strokeStyle = "#d7b34e";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(-43, -57);
+    ctx.lineTo(43, -57);
+    ctx.stroke();
+    ctx.fillStyle = "#506173";
+    ctx.fillRect(-92, 38, 184, 34);
+    ctx.restore();
+  }
+
+  function drawTitleTrail() {
+    ctx.fillStyle = "#d9c17e";
+    ctx.beginPath();
+    ctx.moveTo(472, 420);
+    ctx.quadraticCurveTo(530, 490, 486, 640);
+    ctx.lineTo(318, 640);
+    ctx.quadraticCurveTo(356, 500, 432, 420);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = "rgba(97, 78, 47, .13)";
+    for (let y = 448; y < 640; y += 38) {
+      ctx.fillRect(354 + (y % 3) * 14, y, 130, 8);
+    }
   }
 
   function roundedHill(x, y, w, h) {
