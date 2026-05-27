@@ -200,6 +200,38 @@ Review focus:
 - Whether Musharna's sleep habit is funny without undercutting authority.
 - Whether Team Apex's eventual redemption path has enough consequence.
 
+### PR 2E: Prologue and Chapter 1 development scope
+
+Branch:
+
+```text
+codex/prologue-chapter1-dev-scope
+```
+
+Status: prepared locally after shifting story to the backburner.
+
+Base branch:
+
+```text
+codex/dream-partner-apex-round-3
+```
+
+Scope:
+
+- Freeze playable scope to prologue plus Chapter 1.
+- Define mechanics MVP.
+- Define PMDO vertical slice tasks.
+- Record PMDO install blocker.
+- Record latest PMDO release checked.
+- Keep Storm, Dream, and later story arcs out of playable MVP scope.
+
+Review focus:
+
+- Whether the MVP is small enough to build.
+- Whether mechanics are prioritized correctly.
+- Whether PMDO setup tasks are clear.
+- Whether the acceptance checklist is testable.
+
 ### PR 3: Progression data prototype
 
 Branch:

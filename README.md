@@ -21,6 +21,10 @@ The original legendary and mythical Pokemon were ancient First Legends tied to s
 - [Story Crafting Protocol](docs/06_STORY_CRAFTING_PROTOCOL.md)
 - [Storm Domain Story Pass](docs/07_STORM_DOMAIN_STORY_PASS.md)
 - [Dream Domain Story Pass](docs/08_DREAM_DOMAIN_STORY_PASS.md)
+- [Playable MVP Scope](docs/09_PLAYABLE_MVP_SCOPE.md)
+- [Mechanics MVP Spec](docs/10_MECHANICS_MVP_SPEC.md)
+- [PMDO Vertical Slice Tasks](docs/11_PMDO_VERTICAL_SLICE_TASKS.md)
+- [Development Notes and Blockers](docs/12_DEV_NOTES_AND_BLOCKERS.md)
 
 ## Current Build Assumption
 
