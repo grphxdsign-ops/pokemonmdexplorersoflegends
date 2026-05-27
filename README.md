@@ -20,6 +20,7 @@ The original legendary and mythical Pokemon were ancient First Legends tied to s
 - [PR Roadmap](docs/05_PR_ROADMAP.md)
 - [Story Crafting Protocol](docs/06_STORY_CRAFTING_PROTOCOL.md)
 - [Storm Domain Story Pass](docs/07_STORM_DOMAIN_STORY_PASS.md)
+- [Dream Domain Story Pass](docs/08_DREAM_DOMAIN_STORY_PASS.md)
 
 ## Current Build Assumption
 
