@@ -96,8 +96,18 @@ Foreshadowing:
 
 - The first full domain arc after the prologue is Storm.
 - Luxray is the Storm Living Legend.
-- The domain conflict should be energetic, public, and dangerous enough to show why domain unrest matters.
-- This arc should introduce larger-scale Renown, Team Apex pressure, and the first serious case where Void Domain appears guilty.
+- Storm Domain is centered on the Lightning Cliffs.
+- Luxray is reckless and aggressive like lightning.
+- Luxray becomes the first Living Legend to act on aggression as domain tension rises.
+- A dark force manipulates Luxray, making him erratic and violent.
+- Dusknoir's underlings, Banette and Porygon, are seen sneaking into Storm Domain and spreading something into the water.
+- This makes Void Domain and Dusknoir look guilty.
+- Team Apex does not cut corners here, but they are known for ruthless tactics.
+- The partner does not admire or envy Team Apex yet. Their desperation arc should come later.
+- Luxray is too strong for the protagonist and partner.
+- Arcanine saves the protagonist and partner from Luxray, strengthening public trust in him.
+- The rescue is secretly a ploy because Arcanine helped set up Luxray's corruption.
+- This arc does not teach a clean domain lesson. Its purpose is to make the protagonist and partner begin suspecting Void Domain and Dusknoir.
 
 ### Act 4: Domain Pilgrimage
 

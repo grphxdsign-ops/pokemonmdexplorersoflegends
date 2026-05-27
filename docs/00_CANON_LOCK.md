@@ -33,6 +33,25 @@ Notes:
 - The current timeline is far enough in the future that many successors have carried each Mantle over time.
 - The first full domain arc after the prologue is Storm.
 
+## First Full Domain Arc: Storm
+
+Storm Domain is the first full domain arc after the prologue.
+
+Locked details:
+
+- Living Legend: Luxray.
+- Setting: Lightning Cliffs.
+- Luxray is reckless and aggressive like lightning.
+- Luxray is the first Living Legend to act on aggression as tensions begin rising between domains.
+- A dark force manipulates Luxray, making him erratic and violent.
+- Dusknoir's underlings, Banette and Porygon, are seen sneaking into Storm Domain and spreading something into the water.
+- This creates the first major reason for the protagonist and partner to suspect Void Domain and Dusknoir.
+- Team Apex does not cheat or cut corners here. They are simply known for ruthless tactics.
+- The partner does not admire Team Apex in this arc and does not begin getting desperate yet.
+- Arcanine saves the protagonist and partner from Luxray because Luxray is too strong for them.
+- Arcanine's rescue is a trust-building ploy, because Arcanine helped create the Luxray corruption in the first place.
+- Storm Domain is not a lesson arc. Its story function is to escalate suspicion toward Void Domain and Dusknoir.
+
 ## Living Legends and Guildmasters
 
 Domain Legends are guildmaster-equivalents in this world.

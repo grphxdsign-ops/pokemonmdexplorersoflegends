@@ -104,6 +104,38 @@ Review focus:
 - First domain arc choice.
 - Whether the partner's moral drift has enough pressure from Team Apex and Arcanine.
 
+### PR 2B: Storm domain interview round 2
+
+Branch:
+
+```text
+codex/storm-domain-round-2
+```
+
+Status: prepared locally after Round 2 answers.
+
+Base branch:
+
+```text
+codex/domain-interview-round-1
+```
+
+Scope:
+
+- Luxray personality lock.
+- Lightning Cliffs setting lock.
+- Storm Domain crisis lock.
+- Banette and Porygon false evidence.
+- Team Apex's ruthless-but-not-cheating role.
+- Arcanine's staged rescue of the protagonist and partner.
+
+Review focus:
+
+- Whether Storm works as the first suspicion arc.
+- Whether Arcanine's rescue hides the betrayal cleanly.
+- Whether Team Apex feels present without starting the partner's desperation too early.
+- Whether Dusknoir suspicion is strong without proving guilt too early.
+
 ### PR 3: Progression data prototype
 
 Branch:
