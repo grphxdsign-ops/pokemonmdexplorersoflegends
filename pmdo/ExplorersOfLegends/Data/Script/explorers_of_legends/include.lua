@@ -1,7 +1,4 @@
--- Explorers of Legends persistent entry script.
---
--- PMDO adds quest main.lua requires on top of the base game's main.lua.
--- Keep long-lived services and shared modules here.
+-- Common include point for map, zone, and event scripts.
 
 local function eol_add_package_path()
   local source = debug.getinfo(1, "S").source
@@ -16,8 +13,6 @@ end
 eol_add_package_path()
 
 require 'explorers_of_legends.common'
-require 'explorers_of_legends.services.eol_service'
-
-math.randomseed(os.time())
-
-return EOL
+require 'explorers_of_legends.state'
+require 'explorers_of_legends.mechanics.attribute_points'
+require 'explorers_of_legends.mechanics.renown'
