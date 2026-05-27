@@ -4,7 +4,7 @@ Standalone Pokemon Mystery Dungeon-style fangame prototype.
 
 ## Current Direction
 
-This is no longer a PMDO Quest package. PMDO can still be used as a structural reference for pacing, dungeons, dialogue flow, and familiar Mystery Dungeon feel, but the active game is standalone and lives in this repository.
+This is no longer a PMDO Quest package. PMDO can still be used as a structural reference for pacing, dungeons, dialogue flow, and familiar Mystery Dungeon feel, but the active game is standalone and lives in this repository. The current primary build is a C# Windows desktop app, with the earlier browser prototype kept as a reference slice.
 
 Core premise:
 
@@ -12,17 +12,28 @@ The original legendary and mythical Pokemon were ancient First Legends tied to s
 
 ## Play Now
 
+Desktop build:
+
+```text
+desktop\ExplorersOfLegends\build_desktop.cmd
+desktop\ExplorersOfLegends\build\ExplorersOfLegends.exe
+```
+
+The desktop app uses the Windows C# compiler that ships with .NET Framework, so it does not require the .NET SDK on this machine.
+
+Browser prototype:
+
 Open:
 
 ```text
 game/index.html
 ```
 
-No external engine, PMDO install, Quest package, or build step is required for the current prototype.
+No external engine, PMDO install, or Quest package is required for either prototype.
 
 ## Current Prototype
 
-- PMD-inspired loading/title screen.
+- C# desktop app with PMD-inspired loading/title screen.
 - Personality quiz.
 - Partner selection after the quiz.
 - Lowstep hub.
@@ -30,7 +41,7 @@ No external engine, PMDO install, Quest package, or build step is required for t
 - Arcanine rescue scene.
 - First Renown reward.
 - Equal-cost Attribute Point spending.
-- Local save/continue support.
+- Desktop save/continue support.
 
 ## Key Docs
 
@@ -45,3 +56,4 @@ No external engine, PMDO install, Quest package, or build step is required for t
 - [Dream Domain Story Pass](docs/08_DREAM_DOMAIN_STORY_PASS.md)
 - [Playable MVP Scope](docs/09_PLAYABLE_MVP_SCOPE.md)
 - [Mechanics MVP Spec](docs/10_MECHANICS_MVP_SPEC.md)
+- [Desktop Build README](desktop/ExplorersOfLegends/README.md)

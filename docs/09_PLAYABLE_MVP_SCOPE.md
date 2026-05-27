@@ -136,17 +136,18 @@ Actual stat application can be simple in the first slice. The important part is 
 
 ## Standalone Reference Notes
 
-The first playable build now lives under:
+The first playable desktop build now lives under:
+
+```text
+desktop/ExplorersOfLegends/
+```
+
+It is a C# Windows Forms app with a custom draw loop, keyboard input, mouse-driven menus, save/load, and the prologue through Chapter 1 playable slice.
+
+The browser prototype remains under:
 
 ```text
 game/
 ```
 
-The browser prototype is intentionally small and direct:
-
-- static HTML/CSS/JavaScript,
-- no external engine requirement,
-- no generated PMDO data,
-- no Quest packaging.
-
-The prototype may still borrow Mystery Dungeon design language: grid movement, short floors, dialogue boxes, rescue-board pacing, and chapter-end reward flow.
+Both prototypes may still borrow Mystery Dungeon design language: grid movement, short floors, dialogue boxes, rescue-board pacing, and chapter-end reward flow. The game remains standalone and does not use PMDO Quest packaging.

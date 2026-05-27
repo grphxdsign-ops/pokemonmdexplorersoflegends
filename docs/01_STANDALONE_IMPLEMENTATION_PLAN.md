@@ -6,7 +6,7 @@ Status: active technical direction.
 
 Pokemon Mystery Dungeon: Explorers of Legends is now a standalone game, not a PMDO Quest package.
 
-The first implementation target is a browser-playable prototype because it allows fast iteration on:
+The current primary implementation target is a C# Windows desktop app, because the game should feel familiar to PMDO while remaining standalone. The desktop build now carries the playable slice:
 
 - loading/title presentation,
 - starter quiz,
@@ -17,15 +17,23 @@ The first implementation target is a browser-playable prototype because it allow
 - Attribute Point rewards,
 - save/continue state.
 
+The browser-playable prototype remains useful as a fast visual and mechanical reference while the desktop engine becomes the main game.
+
 PMDO can remain a reference for familiar structure and pacing, but the game code, assets, loading screen, and systems live in this repository.
 
 ## Active Package
 
 ```text
-game/
+desktop/ExplorersOfLegends/
 ```
 
-The current prototype is static HTML, CSS, and JavaScript. It runs by opening `game/index.html`.
+The active desktop prototype is a C# Windows Forms app. It builds with `desktop\ExplorersOfLegends\build_desktop.cmd` and produces `desktop\ExplorersOfLegends\build\ExplorersOfLegends.exe`.
+
+The browser reference prototype still lives under:
+
+```text
+game/
+```
 
 ## First Playable Slice
 
@@ -52,7 +60,7 @@ Avoid over-detailed AI-looking paintings. Prefer simple, readable, game-native s
 
 ## Near-Term Engine Work
 
-- Split the current prototype into a small scene/state architecture.
+- Split more of the desktop app into explicit scene/state/action classes as the playable slice grows.
 - Add richer dungeon rules: turn queue, move list, items, floor events.
 - Add sprite sheets or custom original sprites.
 - Add menus for AP spending during hub play, not only at Chapter 1 completion.
