@@ -37,6 +37,8 @@ Notes:
 
 Storm Domain is the first full domain arc after the prologue.
 
+Detailed autonomous draft: `docs/07_STORM_DOMAIN_STORY_PASS.md`
+
 Locked details:
 
 - Living Legend: Luxray.

@@ -94,6 +94,8 @@ Foreshadowing:
 
 ### Act 3: Storm Domain
 
+Detailed autonomous draft: `docs/07_STORM_DOMAIN_STORY_PASS.md`
+
 - The first full domain arc after the prologue is Storm.
 - Luxray is the Storm Living Legend.
 - Storm Domain is centered on the Lightning Cliffs.

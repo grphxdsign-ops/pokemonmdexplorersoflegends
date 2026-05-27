@@ -18,6 +18,8 @@ The original legendary and mythical Pokemon were ancient First Legends tied to s
 - [Progression Systems](docs/03_PROGRESSION_SYSTEMS.md)
 - [Domain Interview Notes](docs/04_DOMAIN_INTERVIEW_NOTES.md)
 - [PR Roadmap](docs/05_PR_ROADMAP.md)
+- [Story Crafting Protocol](docs/06_STORY_CRAFTING_PROTOCOL.md)
+- [Storm Domain Story Pass](docs/07_STORM_DOMAIN_STORY_PASS.md)
 
 ## Current Build Assumption
 
@@ -36,4 +38,3 @@ The local repo can be initialized immediately. Remote GitHub repo creation is bl
 - GitHub CLI is installed and authenticated locally, or
 - the GitHub connector exposes repository creation, or
 - an empty GitHub repository is created manually and provided as `owner/name`.
-

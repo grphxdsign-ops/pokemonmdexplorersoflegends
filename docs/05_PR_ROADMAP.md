@@ -136,6 +136,39 @@ Review focus:
 - Whether Team Apex feels present without starting the partner's desperation too early.
 - Whether Dusknoir suspicion is strong without proving guilt too early.
 
+### PR 2C: Story autonomy and Storm draft
+
+Branch:
+
+```text
+codex/story-autonomy-pass
+```
+
+Status: prepared locally after the user requested fewer micro-interviews.
+
+Base branch:
+
+```text
+codex/storm-domain-round-2
+```
+
+Scope:
+
+- Add story crafting protocol.
+- Define when to ask the user versus when to craft autonomously.
+- Add autonomous Storm Domain story pass.
+- Decide Banette and Porygon are real Void agents attempting containment, not poisoning the water.
+- Decide Luxray is affected by nightmare-laced distortion residue.
+- Decide Team Apex functions as brutal problem-solvers in Storm.
+- Define Thunderhead Crossing, Static Run, Raincoil Aqueduct, Stormcall Perch, and Lightning Crown Summit.
+
+Review focus:
+
+- Whether the autonomy policy avoids over-interviewing.
+- Whether Storm has enough mystery momentum.
+- Whether Arcanine's staged rescue remains subtle.
+- Whether the false clue against Void is believable.
+
 ### PR 3: Progression data prototype
 
 Branch:
