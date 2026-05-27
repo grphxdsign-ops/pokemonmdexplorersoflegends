@@ -14,7 +14,7 @@ Use this file for interviews and design passes.
 | Seed | Lilligant | Needs user interview |
 | Land | Torterra | Needs user interview |
 | Dream | Musharna | Needs user interview |
-| Storm | Luxray | Needs user interview |
+| Storm | Luxray | Round 2 answered |
 | Life | Blissey | Needs user interview |
 | Death | Houndoom | Round 1 answered |
 | Void | Dusknoir | Round 1 answered |
@@ -140,3 +140,58 @@ Current internal recommendation:
 4. What false evidence makes Void Domain look guilty in the Storm arc?
 5. How does Arcanine stay involved after the prologue without making the betrayal too obvious?
 6. What Pokemon species should the partner be, or should that stay quiz/customizable?
+
+## Interview Round 2 Answers
+
+1. Luxray is reckless and aggressive like lightning.
+2. Storm Domain is set around the Lightning Cliffs.
+3. Luxray is the first Living Legend to act on aggression as domain tensions start rising. Manipulated by a dark force, he acts erratic and violent.
+4. Dusknoir's underlings, Banette and Porygon, are seen sneaking into Storm Domain and spreading something into the water.
+5. Team Apex does not cut corners in this arc. They are simply known for ruthless tactics.
+6. The partner does not admire or envy Team Apex here. The partner does not become desperate until much later.
+7. Arcanine saves the protagonist and partner from Luxray because Luxray is too strong for them. This builds trust in Arcanine while hiding that corrupting Luxray was his idea.
+8. Storm Domain does not teach a domain lesson. It makes the protagonist and partner begin to suspect Void Domain and Dusknoir.
+
+## Storm Domain Lock
+
+Storm Domain is the first full domain arc after the prologue.
+
+Living Legend:
+
+- Luxray.
+
+Setting:
+
+- Lightning Cliffs.
+
+Core function:
+
+- Escalate the world mystery.
+- Turn the protagonist and partner's suspicion toward Void Domain.
+- Reinforce Arcanine's trusted public image.
+- Show that a Living Legend can become dangerous when manipulated.
+
+Conflict:
+
+Luxray reacts to rising domain tension with aggression. A dark force corrupts or manipulates him, making him erratic and violent. The protagonist and partner cannot defeat him at this point.
+
+False evidence:
+
+Banette and Porygon, identified as Dusknoir's underlings, are seen sneaking into Storm Domain and spreading something into the water. This makes Dusknoir appear responsible for the corruption.
+
+Team Apex:
+
+Team Apex does not cheat in this arc. They are present as a ruthless team, but the partner does not admire them yet. Their influence on the partner should build later.
+
+Arcanine:
+
+Arcanine saves the protagonist and partner from Luxray. This should feel heroic and convincing, but it is also a calculated trust-building move because Arcanine was behind Luxray's corruption.
+
+## Interview Round 3 Questions
+
+1. What are Banette and Porygon like: loyal to Dusknoir, framed by Zoroark, corrupted, coerced, or actually traitorous?
+2. What is the dark force affecting Luxray: nightmare corruption, death energy, illusion, poisoned water, or something else?
+3. Should Luxray remember what happened after he is saved, or be confused and ashamed?
+4. Does Arcanine personally fight Luxray, calm him, or create an opening for everyone to escape?
+5. What role should Team Apex play in the Storm arc if they are not cheating: rival rescuers, brutal problem-solvers, public favorites, or background pressure?
+6. Which domain should follow Storm: Seed, Dream, Land, or Sea?
