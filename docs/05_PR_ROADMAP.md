@@ -79,6 +79,31 @@ Review focus:
 - Quest package is source controlled cleanly.
 - No generated junk files are committed.
 
+### PR 2A: Domain interview round 1
+
+Branch:
+
+```text
+codex/domain-interview-round-1
+```
+
+Status: prepared locally.
+
+Scope:
+
+- Arcanine motivation lock.
+- Houndoom motivation lock.
+- Zoroark motivation lock.
+- Dusknoir suspicion arc lock.
+- Storm as the first full domain arc.
+
+Review focus:
+
+- Villain motivations.
+- Dusknoir innocence arc.
+- First domain arc choice.
+- Whether the partner's moral drift has enough pressure from Team Apex and Arcanine.
+
 ### PR 3: Progression data prototype
 
 Branch:

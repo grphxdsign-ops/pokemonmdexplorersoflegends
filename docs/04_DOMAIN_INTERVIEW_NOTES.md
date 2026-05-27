@@ -16,11 +16,11 @@ Use this file for interviews and design passes.
 | Dream | Musharna | Needs user interview |
 | Storm | Luxray | Needs user interview |
 | Life | Blissey | Needs user interview |
-| Death | Houndoom | Villain, needs detail |
-| Void | Dusknoir | Innocent suspect, needs detail |
-| Nightmare | Zoroark | Villain, needs detail |
+| Death | Houndoom | Round 1 answered |
+| Void | Dusknoir | Round 1 answered |
+| Nightmare | Zoroark | Round 1 answered |
 | Sea | Milotic | Needs user interview |
-| Sun | Arcanine | Villain mentor, needs detail |
+| Sun | Arcanine | Round 1 answered |
 | Moon | Umbreon | Needs user interview |
 | Frozen | Froslass | Needs user interview |
 
@@ -39,14 +39,15 @@ Public face:
 
 Private truth:
 
-- believes the world has grown soft,
-- thinks inherited successors are pale imitations of First Legends,
+- is delusional,
+- saw evil in others and decided the world must be purged,
+- wants to restart the world anew,
 - uses public heroism to control trust,
-- sees chaos as a necessary fire that will reveal "real" legends.
+- sees chaos as a cleansing fire rather than cruelty.
 
-Design need:
+Round 1 lock:
 
-Decide whether Arcanine is self-righteous, grief-driven, power-hungry, or genuinely convinced they are saving the world.
+Arcanine is delusional and wants to restart the world anew. He saw evil in others and now believes purging the world is necessary.
 
 ### Houndoom, Death Living Legend
 
@@ -57,11 +58,12 @@ Current seed:
 - patient,
 - comfortable with fear,
 - sees death as truth,
-- believes the world lies to itself by softening endings.
+- believes the world lies to itself by softening endings,
+- hopes to send the world into chaos.
 
-Design need:
+Round 1 lock:
 
-Decide whether Houndoom worships Yveltal as a liberator, judge, destroyer, or necessary cosmic force.
+Houndoom works with Arcanine because their goals align, not because of personal loyalty. He wants chaos and sees the villain plan as a way to break the current world order.
 
 ### Zoroark, Nightmare Living Legend
 
@@ -71,11 +73,13 @@ Current seed:
 - bitter,
 - deceptive,
 - expert at identity manipulation,
-- frames Dusknoir to weaponize existing fear of Void.
+- frames Dusknoir to weaponize existing fear of Void,
+- highly manipulative,
+- wants to use everyone.
 
-Design need:
+Round 1 lock:
 
-Decide whether Zoroark wants revenge for Nightmare Domain being feared, wants Darkrai restored, or simply wants to prove all legends are masks.
+Zoroark is not primarily sympathetic at this stage. He is highly manipulative and wants to use everyone: Arcanine, Houndoom, Dusknoir, Team Apex, the domains, and public fear itself.
 
 ### Dusknoir, Void Living Legend
 
@@ -86,11 +90,14 @@ Current seed:
 - burdened,
 - hard to read,
 - easy to suspect,
-- innocent of the central crimes.
+- innocent of the central crimes,
+- repeatedly tries to clear his own name,
+- attempts to cast suspicion on Arcanine early,
+- fails to win trust because of his frightening look and feared position.
 
-Design need:
+Round 1 lock:
 
-Decide whether Dusknoir is cold because they are hiding grief, protecting forbidden knowledge, or carrying a dangerous Void duty no one else understands.
+Dusknoir attempts to clear his own name repeatedly despite his frightening look and position. He tries to drag Arcanine's name down throughout early interactions, but everyone trusts Arcanine at first and dislikes or fears Dusknoir. He does not win broad trust until the end.
 
 ## Interview Round 1 Questions
 
@@ -105,14 +112,31 @@ Answer these first so the next planning pass can define domain leaders.
 7. Which Living Legend should become the protagonist's strongest ally before the climax?
 8. Should Team Apex be redeemable by default, or only redeemable if the player makes specific mercy choices?
 
+## Interview Round 1 Answers
+
+1. Arcanine is delusional and wants to restart the world anew.
+2. Arcanine saw evil in others and decided the world needed to be purged.
+3. Houndoom hopes to send the world into chaos and works with Arcanine because they share a similar goal.
+4. Zoroark is highly manipulative and wants to use everyone.
+5. Dusknoir repeatedly attempts to clear his own name despite his frightening look and position. He fails to win trust until the end.
+6. The first full domain arc after the prologue is Storm.
+
 ## Self-Interview Pass
 
 Current internal recommendation:
 
-- Arcanine should believe they are doing good. That makes the early rescue scene honest enough to avoid feeling like a cheap fakeout.
-- Houndoom should be loyal to Yveltal's doctrine, not Arcanine personally. This lets the villain trio fracture under pressure.
-- Zoroark should be the most personally malicious member because they actively frame Dusknoir and destabilize innocent domains.
-- Dusknoir should be sympathetic but still unsettling. Clearing their name should not make Void cuddly; it should teach the player that necessary domains can be frightening without being evil.
-- First full domain arc should be Seed or Storm. Seed gives a grounded emotional start; Storm gives early spectacle.
+- Arcanine's early rescue should still feel genuinely heroic on the surface, but later scenes should show that his heroism has become twisted into purifying-world delusion.
+- Houndoom should be a chaos collaborator rather than a subordinate. He can fracture from Arcanine if their visions of destruction differ.
+- Zoroark should be the most personally manipulative member because he actively frames Dusknoir and destabilizes innocent domains.
+- Dusknoir should be sympathetic but still unsettling. Clearing his name should not make Void comforting; it should teach the player that necessary domains can be frightening without being evil.
+- Storm as the first full domain arc gives early spectacle and lets Luxray model a different type of leader from Arcanine.
 - Team Apex should be redeemable only through specific mercy choices.
 
+## Interview Round 2 Questions
+
+1. What is Luxray like as the Storm Living Legend: noble, volatile, tactical, reckless, weary, or something else?
+2. What crisis is happening in Storm Domain when the protagonist arrives?
+3. How should Team Apex cut corners during the Storm arc?
+4. What false evidence makes Void Domain look guilty in the Storm arc?
+5. How does Arcanine stay involved after the prologue without making the betrayal too obvious?
+6. What Pokemon species should the partner be, or should that stay quiz/customizable?
