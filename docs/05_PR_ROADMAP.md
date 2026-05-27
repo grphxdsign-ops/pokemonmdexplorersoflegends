@@ -1,311 +1,64 @@
 # PR Roadmap
 
-Goal: keep every change small enough for focused review by humans and any installed review tools such as Greptile or Greploop.
+Status: updated for standalone development.
 
-## Current Remote Status
+## Current Stack
 
-Local planning can proceed now.
-
-Remote PR creation is blocked until a GitHub repository exists. Current available GitHub connector tools can work inside existing repositories, but do not expose new repository creation. The local machine also does not currently have GitHub CLI installed or a `GITHUB_TOKEN` / `GH_TOKEN` environment variable.
-
-The in-app browser is not logged into GitHub, so repository creation through the GitHub website is also blocked for now.
-
-Local repository status:
-
-```text
-Initialized on main.
-Initial planning commit: Add PMDO planning docs.
-```
-
-Connected GitHub account found:
-
-```text
-grphxdsign-ops
-```
-
-Needed remote target:
-
-```text
-grphxdsign-ops/PokeRom
-```
-
-## Planned PR Sequence
-
-### PR 1: Canon and PMDO planning docs
-
-Status: prepared locally as the initial baseline commit because no remote repository exists yet.
+### PR: Standalone Game Foundation
 
 Branch:
 
 ```text
-codex/canon-pmdo-plan
+codex/game-foundation-scripts-assets
 ```
 
 Scope:
 
-- README
-- canon lock
-- PMDO implementation plan
-- story outline
-- progression systems
-- domain interview notes
-- PR roadmap
+- Remove active PMDO Quest packaging.
+- Add `game/` as the standalone playable prototype.
+- Add PMD-inspired loading/title screen styling.
+- Add personality quiz and partner selection.
+- Add Lowstep hub and First Step Cave.
+- Add Arcanine rescue, first Renown reward, and Attribute Point spending.
+- Update docs to point at standalone development.
 
 Review focus:
 
-- Is the new story canon accurate?
-- Are the locked domain Mantles correct?
-- Is the PMDO strategy reasonable?
+- Does the loading screen feel closer to Pokemon Mystery Dungeon without looking over-rendered?
+- Is the standalone game direction clear?
+- Does the first playable slice prove the core loop?
 
-### PR 2: PMDO Quest skeleton
+Validation:
 
-Branch:
+- Open `game/index.html`.
+- Play from title through Chapter 1 completion.
+- Confirm local save/continue works.
 
-```text
-codex/pmdo-quest-skeleton
-```
+## Next PRs
 
-Scope:
+### PR: Dungeon Combat Pass
 
-- generated PMDO Quest folder
-- baseline `Mod.xml`
-- empty bootable quest
-- placeholder hub
-- placeholder first dungeon
+- Add turn queue.
+- Add basic move data.
+- Add accuracy/evasion checks, with Speed AP affecting those checks.
+- Add enemy defeat rewards.
+- Add clearer floor-end flow.
 
-Review focus:
+### PR: Sprite And Tile Art Pass
 
-- PMDO launches.
-- Quest package is source controlled cleanly.
-- No generated junk files are committed.
+- Replace simple code tokens with custom original sprites.
+- Add simple tile sheets for Lowstep and First Step Cave.
+- Keep official Pokemon species names, but avoid copying official game sprites.
 
-### PR 2A: Domain interview round 1
+### PR: Menu And Save Polish
 
-Branch:
+- Add save-slot UI.
+- Add AP spending from the hub.
+- Add options/settings.
+- Add keyboard remapping notes.
 
-```text
-codex/domain-interview-round-1
-```
+### PR: Chapter 2 Setup
 
-Status: prepared locally.
-
-Scope:
-
-- Arcanine motivation lock.
-- Houndoom motivation lock.
-- Zoroark motivation lock.
-- Dusknoir suspicion arc lock.
-- Storm as the first full domain arc.
-
-Review focus:
-
-- Villain motivations.
-- Dusknoir innocence arc.
-- First domain arc choice.
-- Whether the partner's moral drift has enough pressure from Team Apex and Arcanine.
-
-### PR 2B: Storm domain interview round 2
-
-Branch:
-
-```text
-codex/storm-domain-round-2
-```
-
-Status: prepared locally after Round 2 answers.
-
-Base branch:
-
-```text
-codex/domain-interview-round-1
-```
-
-Scope:
-
-- Luxray personality lock.
-- Lightning Cliffs setting lock.
-- Storm Domain crisis lock.
-- Banette and Porygon false evidence.
-- Team Apex's ruthless-but-not-cheating role.
-- Arcanine's staged rescue of the protagonist and partner.
-
-Review focus:
-
-- Whether Storm works as the first suspicion arc.
-- Whether Arcanine's rescue hides the betrayal cleanly.
-- Whether Team Apex feels present without starting the partner's desperation too early.
-- Whether Dusknoir suspicion is strong without proving guilt too early.
-
-### PR 2C: Story autonomy and Storm draft
-
-Branch:
-
-```text
-codex/story-autonomy-pass
-```
-
-Status: prepared locally after the user requested fewer micro-interviews.
-
-Base branch:
-
-```text
-codex/storm-domain-round-2
-```
-
-Scope:
-
-- Add story crafting protocol.
-- Define when to ask the user versus when to craft autonomously.
-- Add autonomous Storm Domain story pass.
-- Decide Banette and Porygon are real Void agents attempting containment, not poisoning the water.
-- Decide Luxray is affected by nightmare-laced distortion residue.
-- Decide Team Apex functions as brutal problem-solvers in Storm.
-- Define Thunderhead Crossing, Static Run, Raincoil Aqueduct, Stormcall Perch, and Lightning Crown Summit.
-
-Review focus:
-
-- Whether the autonomy policy avoids over-interviewing.
-- Whether Storm has enough mystery momentum.
-- Whether Arcanine's staged rescue remains subtle.
-- Whether the false clue against Void is believable.
-
-### PR 2D: Dream, partner, and Team Apex round 3
-
-Branch:
-
-```text
-codex/dream-partner-apex-round-3
-```
-
-Status: prepared locally after Round 3 answers.
-
-Base branch:
-
-```text
-codex/story-autonomy-pass
-```
-
-Scope:
-
-- Lock partner selection after the quiz.
-- Lock Dream as the domain after Storm.
-- Lock Musharna's dialogue sleep habit.
-- Lock Team Apex's later Void-corruption fall and redemption start.
-- Add autonomous Dream Domain story pass.
-
-Review focus:
-
-- Whether partner species flexibility can coexist with fixed partner personality.
-- Whether Dream Domain works as a mystery-deepening follow-up to Storm.
-- Whether Musharna's sleep habit is funny without undercutting authority.
-- Whether Team Apex's eventual redemption path has enough consequence.
-
-### PR 2E: Prologue and Chapter 1 development scope
-
-Branch:
-
-```text
-codex/prologue-chapter1-dev-scope
-```
-
-Status: prepared locally after shifting story to the backburner.
-
-Base branch:
-
-```text
-codex/dream-partner-apex-round-3
-```
-
-Scope:
-
-- Freeze playable scope to prologue plus Chapter 1.
-- Define mechanics MVP.
-- Define PMDO vertical slice tasks.
-- Record PMDO install blocker.
-- Record latest PMDO release checked.
-- Keep Storm, Dream, and later story arcs out of playable MVP scope.
-
-Review focus:
-
-- Whether the MVP is small enough to build.
-- Whether mechanics are prioritized correctly.
-- Whether PMDO setup tasks are clear.
-- Whether the acceptance checklist is testable.
-
-### PR 3: Progression data prototype
-
-Branch:
-
-```text
-codex/progression-prototype
-```
-
-Scope:
-
-- Renown variables
-- attribute point variables
-- hidden skill rank variables
-- debug test scripts
-- save/load persistence check
-
-Review focus:
-
-- variables persist correctly,
-- Speed is treated as accuracy/evasion,
-- AP costs are equal for all species.
-
-### PR 4: Prologue vertical slice
-
-Branch:
-
-```text
-codex/prologue-vertical-slice
-```
-
-Scope:
-
-- protagonist mundane opening,
-- partner pitch,
-- first small dungeon,
-- Arcanine rescue scene,
-- first Renown award.
-
-Review focus:
-
-- emotional tone,
-- partner characterization,
-- Arcanine inspiration/foreshadowing balance.
-
-### PR 5: First domain arc
-
-Branch:
-
-```text
-codex/first-domain-arc
-```
-
-Scope:
-
-- first chosen domain,
-- Living Legend personality,
-- domain crisis,
-- optional questline,
-- Team Apex pressure scene.
-
-Review focus:
-
-- quest branching,
-- Renown consequences,
-- domain identity.
-
-## Review Tool Notes
-
-Greptile and Greploop are not directly callable from this workspace right now. If they are installed as GitHub apps or checks on the future repository, this PR structure should give them useful focused diffs.
-
-Each PR should include:
-
-- what changed,
-- why it changed,
-- PMDO test steps,
-- story/design review questions,
-- known risks.
+- Add first Team Apex appearance.
+- Foreshadow Void suspicion.
+- Prepare Storm Domain but do not start full Storm gameplay yet.

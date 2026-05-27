@@ -16,7 +16,7 @@ Do not build the whole RPG system yet. Build the lowest useful layer that can su
 
 ## State Model
 
-Use simple named variables first. If PMDO scripting requires a different exact storage API during implementation, keep the same conceptual names.
+Use simple named variables first. If the standalone engine's storage changes later, keep the same conceptual names.
 
 ### Story Flags
 
@@ -138,7 +138,7 @@ MVP rule:
 - Do not use Speed as turn order.
 - Do not use different AP costs by species.
 
-Later implementation can map Speed AP into accuracy/evasion modifiers once PMDO stat hooks are confirmed.
+Later implementation can map Speed AP into accuracy/evasion modifiers in the battle formula.
 
 ## Renown MVP
 
@@ -248,4 +248,3 @@ After completing Chapter 1, save/load must preserve:
 - Chapter 1 complete flag.
 
 If save/load fails, the playable slice is not done.
-

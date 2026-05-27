@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokemon Mystery Dungeon: Explorers of Legends</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="game-shell" aria-label="Pokemon Mystery Dungeon: Explorers of Legends">
+      <canvas id="game-canvas" width="960" height="640" aria-label="Game view"></canvas>
+
+      <section id="loading-screen" class="screen screen-loading is-active" aria-live="polite">
+        <div class="logo-stack" aria-label="Pokemon Mystery Dungeon: Explorers of Legends">
+          <div class="logo-pokemon">Pokémon</div>
+          <div class="logo-mystery">Mystery Dungeon</div>
+          <div class="logo-legends">Explorers of Legends</div>
+        </div>
+        <div class="loading-strip">
+          <span id="loading-copy">Loading a new legend...</span>
+          <div class="loading-bar"><span id="loading-fill"></span></div>
+        </div>
+      </section>
+
+      <section id="title-brand" class="title-brand" aria-hidden="true">
+        <div class="logo-stack">
+          <div class="logo-pokemon">Pokémon</div>
+          <div class="logo-mystery">Mystery Dungeon</div>
+          <div class="logo-legends">Explorers of Legends</div>
+        </div>
+      </section>
+
+      <section id="menu-panel" class="panel" aria-live="polite"></section>
+      <section id="dialogue-panel" class="dialogue" aria-live="polite"></section>
+      <section id="hud-panel" class="hud" aria-live="polite"></section>
+    </main>
+
+    <script src="src/data.js"></script>
+    <script src="src/game.js"></script>
+  </body>
+</html>

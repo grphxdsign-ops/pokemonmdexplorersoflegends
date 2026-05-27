@@ -18,7 +18,7 @@ The purpose is to prove the game loop, not the whole story.
 
 ## Player Experience Goal
 
-The player should be able to start a new PMDO Quest and play a compact, polished opening that proves:
+The player should be able to open the standalone game and play a compact, polished opening that proves:
 
 - starter quiz works,
 - partner selection works,
@@ -36,7 +36,7 @@ The player should be able to start a new PMDO Quest and play a compact, polished
 
 ### In Scope
 
-- PMDO Quest package setup.
+- Standalone game shell setup.
 - Personality quiz flow.
 - Partner selection after quiz.
 - Prologue opening in a mundane settlement.
@@ -134,40 +134,19 @@ The mechanics MVP includes only the foundation:
 
 Actual stat application can be simple in the first slice. The important part is that the data model exists and persists.
 
-## PMDO Reference Notes
+## Standalone Reference Notes
 
-PMDO mods can be used to create original custom fangames, and its docs recommend using mods so changes can be undone and redone cleanly. PMDO also supports Quest-type mods with their own save files, which fits this project better than a small general mod.
-
-Useful docs:
-
-- PMDO Modding Hub: https://wiki.pmdo.pmdcollab.org/Modding_Hub
-- Creating a Mod: https://wiki.pmdo.pmdcollab.org/Tutorial%3ACreating_a_Mod
-- Dev Mode: https://wiki.pmdo.pmdcollab.org/Dev_Mode
-- Creating Ground Maps: https://wiki.pmdo.pmdcollab.org/Creating_Ground_Maps
-- Creating Dungeons: https://wiki.pmdo.pmdcollab.org/Creating_Dungeons
-
-Current latest PMDO release checked during this pass:
-
-- `v0.8.12`
-- Published: 2026-04-27
-- Windows x64 asset: `setup-windows-x64.zip`
-
-## Local PMDO Install Status
-
-PMDO is now downloaded and unpacked locally.
-
-Install path:
+The first playable build now lives under:
 
 ```text
-C:\Users\rickii\Documents\PMDO\v0.8.12-manual\
+game/
 ```
 
-Launcher:
+The browser prototype is intentionally small and direct:
 
-```text
-C:\Users\rickii\Documents\PMDO\v0.8.12-manual\PMDO.exe
-```
+- static HTML/CSS/JavaScript,
+- no external engine requirement,
+- no generated PMDO data,
+- no Quest packaging.
 
-Next blocker:
-
-The actual `ExplorersOfLegends` Quest package still needs to be created in PMDO dev mode and copied or linked into this repo under `pmdo/ExplorersOfLegends/`.
+The prototype may still borrow Mystery Dungeon design language: grid movement, short floors, dialogue boxes, rescue-board pacing, and chapter-end reward flow.
