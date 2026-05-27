@@ -1,0 +1,20 @@
+# PMDO / local runtime noise
+SCREENSHOT/
+Saves/
+Logs/
+*.log
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Build output
+bin/
+obj/
+dist/
+build/
+
