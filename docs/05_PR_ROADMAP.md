@@ -8,6 +8,15 @@ Local planning can proceed now.
 
 Remote PR creation is blocked until a GitHub repository exists. Current available GitHub connector tools can work inside existing repositories, but do not expose new repository creation. The local machine also does not currently have GitHub CLI installed or a `GITHUB_TOKEN` / `GH_TOKEN` environment variable.
 
+The in-app browser is not logged into GitHub, so repository creation through the GitHub website is also blocked for now.
+
+Local repository status:
+
+```text
+Initialized on main.
+Initial planning commit: Add PMDO planning docs.
+```
+
 Connected GitHub account found:
 
 ```text
@@ -23,6 +32,8 @@ grphxdsign-ops/PokeRom
 ## Planned PR Sequence
 
 ### PR 1: Canon and PMDO planning docs
+
+Status: prepared locally as the initial baseline commit because no remote repository exists yet.
 
 Branch:
 
@@ -145,4 +156,3 @@ Each PR should include:
 - PMDO test steps,
 - story/design review questions,
 - known risks.
-
