@@ -12,17 +12,49 @@ Current priority:
 - playable prologue,
 - playable Chapter 1.
 
+## Local PMDO Install
+
+PMDO has been downloaded and unpacked locally.
+
+Install path:
+
+```text
+C:\Users\rickii\Documents\PMDO\v0.8.12-manual\
+```
+
+Launcher:
+
+```text
+C:\Users\rickii\Documents\PMDO\v0.8.12-manual\PMDO.exe
+```
+
+Downloaded files are stored outside the repo:
+
+```text
+C:\Users\rickii\Documents\PMDO\_downloads\
+```
+
+Downloaded/unpacked components:
+
+- PMDOSetup package from `audinowho/PMDODump` `v0.8.12`.
+- Manual PMDC Windows x64 package from `PMDCollab/PMDC` `v0.8.12`.
+- Matching DumpAsset package at submodule revision `9d864d1425f002b051e7a54fffc639988d8ef9c9`.
+
+Reason for manual install:
+
+The PMDOSetup console expects an interactive console and could not be automated through the hidden command channel. The manual install produced a usable `PMDO.exe`.
+
 ## Current Blocker
 
-PMDO is not installed locally in the checked folders.
+The `ExplorersOfLegends` Quest package has not been generated yet.
 
-Checked:
+Next required step:
 
-- `C:\Users\rickii\Documents`
-- `C:\Users\rickii\Downloads`
-- `C:\Users\rickii\Desktop`
+Run PMDO in dev mode, create the Quest package, then copy or link the generated quest folder into:
 
-No `PMDO.exe` or PMDO folder was found.
+```text
+C:\Users\rickii\Documents\PokeRom\pmdo\ExplorersOfLegends\
+```
 
 ## Latest Release Check
 
@@ -50,7 +82,7 @@ C:\Users\rickii\Documents\PokeRom\
 
 Do not commit PMDO binaries into this repo.
 
-Once PMDO is installed:
+Now that PMDO is unpacked:
 
 1. Start PMDO in dev mode.
 2. Create a Quest package named `ExplorersOfLegends`.
@@ -91,4 +123,3 @@ Do not commit:
 4. Arcanine rescue cutscene.
 5. Chapter 1 mission and reward loop.
 6. Attribute Point and Renown persistence.
-

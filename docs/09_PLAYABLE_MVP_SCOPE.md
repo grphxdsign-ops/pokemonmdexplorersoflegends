@@ -152,13 +152,22 @@ Current latest PMDO release checked during this pass:
 - Published: 2026-04-27
 - Windows x64 asset: `setup-windows-x64.zip`
 
-## Development Blocker
+## Local PMDO Install Status
 
-PMDO is not currently installed in the checked local locations:
+PMDO is now downloaded and unpacked locally.
 
-- `C:\Users\rickii\Documents`
-- `C:\Users\rickii\Downloads`
-- `C:\Users\rickii\Desktop`
+Install path:
 
-Until PMDO is installed or unpacked locally, this repository can define the development plan and scaffolding, but it cannot generate and verify a real PMDO Quest package.
+```text
+C:\Users\rickii\Documents\PMDO\v0.8.12-manual\
+```
 
+Launcher:
+
+```text
+C:\Users\rickii\Documents\PMDO\v0.8.12-manual\PMDO.exe
+```
+
+Next blocker:
+
+The actual `ExplorersOfLegends` Quest package still needs to be created in PMDO dev mode and copied or linked into this repo under `pmdo/ExplorersOfLegends/`.

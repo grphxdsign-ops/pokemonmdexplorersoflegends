@@ -12,7 +12,7 @@ Do not implement the domain arc backlog until this slice is playable.
 
 Tasks:
 
-- Download or install PMDO `v0.8.12` or newer.
+- Download or install PMDO `v0.8.12` or newer. Complete locally.
 - Run PMDO in dev mode.
 - Create a Quest package named `ExplorersOfLegends`.
 - Confirm the generated mod folder appears under PMDO's `MODS` folder.
@@ -25,6 +25,16 @@ Reference commands from PMDO docs:
 PMDO.exe -dev
 PMDO.exe -dev -quest ExplorersOfLegends
 ```
+
+Local PMDO path:
+
+```text
+C:\Users\rickii\Documents\PMDO\v0.8.12-manual\PMDO.exe
+```
+
+Local setup note:
+
+The interactive PMDOSetup console could not run cleanly through the hidden command channel, so PMDO was installed using the documented manual-install approach: PMDC executable package plus matching DumpAsset content from the PMDODump `v0.8.12` submodule revision.
 
 ## Phase 1: Quest Skeleton
 
@@ -172,4 +182,3 @@ Before calling the vertical slice playable:
 - Save/load works after prologue.
 - Save/load works after Chapter 1.
 - End-of-slice message appears.
-
