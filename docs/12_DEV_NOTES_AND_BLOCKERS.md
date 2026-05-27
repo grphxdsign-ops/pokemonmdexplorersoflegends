@@ -46,15 +46,39 @@ The PMDOSetup console expects an interactive console and could not be automated 
 
 ## Current Blocker
 
-The `ExplorersOfLegends` Quest package has not been generated yet.
+The `ExplorersOfLegends` Quest package has been created as an initial skeleton, but it has not been verified in PMDO dev mode yet.
 
-Next required step:
-
-Run PMDO in dev mode, create the Quest package, then copy or link the generated quest folder into:
+Current package path:
 
 ```text
 C:\Users\rickii\Documents\PokeRom\pmdo\ExplorersOfLegends\
 ```
+
+PMDO MODS path:
+
+```text
+C:\Users\rickii\Documents\PMDO\v0.8.12-manual\MODS\ExplorersOfLegends
+```
+
+The PMDO MODS path is a junction to the repo package folder.
+
+Load check:
+
+```text
+PMDO.exe -dev -quest ExplorersOfLegends -reserialize all
+```
+
+Result:
+
+```text
+Exit code: 0
+```
+
+The reserialize command wrote a few generated base data files into the package during validation. Those were removed afterward so the initial skeleton only tracks intentional package files.
+
+Next required step:
+
+Open PMDO in dev mode and verify the Quest package appears in the developer UI / Special Episodes flow. If PMDO requires additional generated files, create/save the package through the dev UI and commit the generated files intentionally.
 
 ## Latest Release Check
 

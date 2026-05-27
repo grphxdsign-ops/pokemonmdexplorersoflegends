@@ -14,9 +14,9 @@ Tasks:
 
 - Download or install PMDO `v0.8.12` or newer. Complete locally.
 - Run PMDO in dev mode.
-- Create a Quest package named `ExplorersOfLegends`.
-- Confirm the generated mod folder appears under PMDO's `MODS` folder.
-- Copy or symlink the generated quest folder into this repo under `pmdo/ExplorersOfLegends/`.
+- Create a Quest package named `ExplorersOfLegends`. Initial skeleton complete locally.
+- Confirm the generated mod folder appears under PMDO's `MODS` folder. Initial junction complete locally.
+- Copy or symlink the generated quest folder into this repo under `pmdo/ExplorersOfLegends/`. Complete locally via junction.
 - Confirm the Quest can be selected and started.
 
 Reference commands from PMDO docs:
@@ -36,14 +36,23 @@ Local setup note:
 
 The interactive PMDOSetup console could not run cleanly through the hidden command channel, so PMDO was installed using the documented manual-install approach: PMDC executable package plus matching DumpAsset content from the PMDODump `v0.8.12` submodule revision.
 
+Current Quest package status:
+
+- `pmdo/ExplorersOfLegends/` exists in the repo.
+- PMDO's `MODS\ExplorersOfLegends` path is a junction to the repo package folder.
+- Initial Quest `Mod.xml` exists with `ModType` set to `Quest`.
+- Initial script placeholder folder exists under `Data/Script/explorers_of_legends/`.
+- PMDO dev reserialize/load check exited successfully with code `0`.
+- Generated base data files from the reserialize check were removed to keep the skeleton clean.
+
 ## Phase 1: Quest Skeleton
 
 Deliverables:
 
-- Quest package exists.
-- `Mod.xml` exists.
+- Quest package exists. Complete locally.
+- `Mod.xml` exists. Complete locally.
 - Repo ignores PMDO runtime output and does not commit PMDO binaries.
-- Quest starts without crashing.
+- Quest starts without crashing. Metadata load check complete via PMDO dev command.
 - Placeholder start map loads.
 
 Acceptance:

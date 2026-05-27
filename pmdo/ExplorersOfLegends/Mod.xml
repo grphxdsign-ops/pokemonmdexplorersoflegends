@@ -1,0 +1,11 @@
+<Header>
+  <Name>Explorers of Legends</Name>
+  <Author>grphxdsign-ops</Author>
+  <Description>Playable vertical slice for Pokemon Mystery Dungeon: Explorers of Legends. Scope: prologue and Chapter 1 only.</Description>
+  <Namespace>explorers_of_legends</Namespace>
+  <UUID>2F6F9A76-B409-4B76-BBB1-28F377D81531</UUID>
+  <Version>0.0.1</Version>
+  <GameVersion>0.8.12</GameVersion>
+  <ModType>Quest</ModType>
+  <Relationships />
+</Header>
