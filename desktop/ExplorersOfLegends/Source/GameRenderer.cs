@@ -9,10 +9,18 @@ namespace ExplorersOfLegends
     public sealed class GameRenderer
     {
         private const int Tile = 48;
+        private readonly SpriteAtlas atlas;
+
+        public GameRenderer()
+        {
+            atlas = new SpriteAtlas();
+        }
 
         public void Draw(Graphics g, GameState state, List<MenuButton> buttons, bool hasSave)
         {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.SmoothingMode = SmoothingMode.None;
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+            g.PixelOffsetMode = PixelOffsetMode.Half;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
             if (state.Scene == SceneKind.Loading)
@@ -240,24 +248,22 @@ namespace ExplorersOfLegends
 
         private void DrawDungeon(Graphics g, GameState state)
         {
-            g.Clear(Color.FromArgb(255, 38, 48, 68));
+            g.Clear(Color.FromArgb(255, 28, 33, 49));
             DungeonFloor dungeon = state.Dungeon;
             if (dungeon == null) return;
 
             int offsetX = 160;
-            int offsetY = 92;
+            int offsetY = 112;
+            using (Brush mapShadow = new SolidBrush(Color.FromArgb(130, 0, 0, 0)))
+            {
+                g.FillRectangle(mapShadow, offsetX - 12, offsetY - 12, dungeon.Width * Tile + 24, dungeon.Height * Tile + 24);
+            }
             for (int y = 0; y < dungeon.Height; y += 1)
             {
                 for (int x = 0; x < dungeon.Width; x += 1)
                 {
-                    Rectangle rect = new Rectangle(offsetX + x * Tile, offsetY + y * Tile, Tile, Tile);
                     bool wall = dungeon.Tiles[x, y] == TileKind.Wall;
-                    using (Brush brush = new SolidBrush(wall ? Color.FromArgb(255, 82, 96, 112) : Color.FromArgb(255, 183, 164, 122)))
-                    using (Pen pen = new Pen(wall ? Color.FromArgb(255, 61, 70, 83) : Color.FromArgb(255, 141, 121, 86), 2f))
-                    {
-                        g.FillRectangle(brush, rect);
-                        g.DrawRectangle(pen, rect);
-                    }
+                    atlas.DrawTile(g, wall ? "cave_wall" : "cave_floor", offsetX + x * Tile, offsetY + y * Tile, Tile);
                 }
             }
 
@@ -268,7 +274,7 @@ namespace ExplorersOfLegends
             for (int i = 0; i < dungeon.Enemies.Count; i += 1)
             {
                 Enemy enemy = dungeon.Enemies[i];
-                PokemonOption wild = new PokemonOption { Id = "wild", Species = enemy.Species, Color = enemy.Color, Accent = Color.FromArgb(255, 52, 42, 61) };
+                PokemonOption wild = new PokemonOption { Id = enemy.Species.ToLowerInvariant(), Species = enemy.Species, Color = enemy.Color, Accent = Color.FromArgb(255, 52, 42, 61) };
                 DrawPokemonToken(g, offsetX + enemy.X * Tile + 24, offsetY + enemy.Y * Tile + 24, wild, 17);
             }
 
@@ -278,7 +284,7 @@ namespace ExplorersOfLegends
             using (Font font = new Font("Trebuchet MS", 22f, FontStyle.Bold))
             using (Brush brush = new SolidBrush(Color.FromArgb(255, 255, 248, 223)))
             {
-                g.DrawString("First Step Cave B" + dungeon.Floor + "F", font, brush, new PointF(160, 56));
+                g.DrawString("First Step Cave B" + dungeon.Floor + "F", font, brush, new PointF(160, 80));
             }
         }
 
@@ -297,9 +303,9 @@ namespace ExplorersOfLegends
             DrawDistantCliff(g);
             DrawAncientArch(g, 482, 333, 1.12f);
             DrawTitleTrail(g);
-            DrawSimpleToken(g, 244, 462, 33, Color.FromArgb(255, 93, 187, 107), Color.FromArgb(255, 36, 95, 57), "leaf");
-            DrawSimpleToken(g, 303, 464, 33, Color.FromArgb(255, 242, 138, 56), Color.FromArgb(255, 163, 58, 24), "flame");
-            DrawSimpleToken(g, 360, 461, 32, Color.FromArgb(255, 247, 207, 61), Color.FromArgb(255, 125, 90, 22), "spark");
+            DrawPokemonToken(g, 244, 462, GameData.Starters["steady"], 22);
+            DrawPokemonToken(g, 303, 464, GameData.Starters["brave"], 22);
+            DrawPokemonToken(g, 360, 461, GameData.Starters["restless"], 21);
             DrawCloud(g, 382, 496, 1.45f);
             DrawCloud(g, 718, 512, 1.7f);
         }
@@ -307,6 +313,7 @@ namespace ExplorersOfLegends
         private void DrawWordmark(Graphics g, float centerX, float top, float scaleValue)
         {
             GraphicsState saved = g.Save();
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TranslateTransform(centerX, top);
             g.ScaleTransform(scaleValue, scaleValue);
             g.TranslateTransform(-centerX, -top);
@@ -389,31 +396,30 @@ namespace ExplorersOfLegends
 
         private void DrawHubBackground(Graphics g)
         {
-            using (LinearGradientBrush sky = new LinearGradientBrush(new Rectangle(0, 0, 960, 640), Color.FromArgb(255, 117, 212, 255), Color.FromArgb(255, 59, 158, 77), LinearGradientMode.Vertical))
+            g.Clear(Color.FromArgb(255, 50, 133, 74));
+            for (int y = 0; y < 14; y += 1)
             {
-                g.FillRectangle(sky, 0, 0, 960, 640);
+                for (int x = 0; x < 20; x += 1)
+                {
+                    string tileId = (x + y * 3) % 7 == 0 || y > 9 ? "grass_dark" : "grass";
+                    atlas.DrawTile(g, tileId, x * Tile, y * Tile, Tile);
+                }
             }
-            DrawCloud(g, 130, 90, 1.15f);
-            DrawCloud(g, 720, 78, .9f);
-            DrawCloud(g, 500, 150, .7f);
 
-            using (Brush hill = new SolidBrush(Color.FromArgb(255, 95, 184, 90)))
+            using (Brush shade = new SolidBrush(Color.FromArgb(45, 21, 71, 53)))
             {
-                g.FillEllipse(hill, -40, 390, 560, 260);
+                g.FillRectangle(shade, 0, 576, 960, 64);
             }
-            using (Brush hill = new SolidBrush(Color.FromArgb(255, 74, 160, 82)))
+
+            using (Pen ridge = new Pen(Color.FromArgb(120, 221, 238, 169), 2f))
             {
-                g.FillEllipse(hill, 410, 415, 650, 260);
+                g.DrawLine(ridge, 0, 96, 960, 96);
+                g.DrawLine(ridge, 0, 578, 960, 578);
             }
         }
 
         private void DrawGroundGrid(Graphics g)
         {
-            using (Pen pen = new Pen(Color.FromArgb(60, 37, 101, 55), 1f))
-            {
-                for (int x = 0; x < 960; x += Tile) g.DrawLine(pen, x, 0, x, 640);
-                for (int y = 0; y < 640; y += Tile) g.DrawLine(pen, 0, y, 960, y);
-            }
         }
 
         private void DrawPath(Graphics g)
@@ -422,28 +428,35 @@ namespace ExplorersOfLegends
             {
                 {4,7},{5,7},{6,7},{7,7},{8,7},{9,7},{10,7},{11,7},{12,7},{13,7},{14,7},{15,8}
             };
-            using (Brush brush = new SolidBrush(Color.FromArgb(255, 216, 189, 124)))
+            for (int i = 0; i < points.GetLength(0); i += 1)
             {
-                for (int i = 0; i < points.GetLength(0); i += 1)
-                {
-                    using (GraphicsPath path = RoundedRect(new RectangleF(points[i, 0] * Tile + 5, points[i, 1] * Tile + 8, 38, 30), 8))
-                    {
-                        g.FillPath(brush, path);
-                    }
-                }
+                atlas.DrawTile(g, "path", points[i, 0] * Tile, points[i, 1] * Tile, Tile);
             }
         }
 
         private void DrawBuilding(Graphics g, int x, int y, string label)
         {
-            FillRounded(g, new RectangleF(x, y, 160, 106), 12, Color.FromArgb(255, 245, 209, 119), Color.Transparent);
-            using (Brush roof = new SolidBrush(Color.FromArgb(255, 49, 95, 168)))
-            using (GraphicsPath path = new GraphicsPath())
+            using (Brush shadow = new SolidBrush(Color.FromArgb(65, 21, 46, 42)))
             {
-                path.AddPolygon(new PointF[] { new PointF(x - 12, y + 26), new PointF(x + 80, y - 28), new PointF(x + 172, y + 26) });
-                g.FillPath(roof, path);
+                g.FillRectangle(shadow, x + 10, y + 92, 152, 20);
             }
-            FillRounded(g, new RectangleF(x + 63, y + 52, 36, 54), 8, Color.FromArgb(255, 90, 57, 33), Color.Transparent);
+            using (Brush wall = new SolidBrush(Color.FromArgb(255, 236, 204, 132)))
+            using (Brush wallDark = new SolidBrush(Color.FromArgb(255, 190, 145, 84)))
+            using (Brush roof = new SolidBrush(Color.FromArgb(255, 51, 101, 175)))
+            using (Brush roofLight = new SolidBrush(Color.FromArgb(255, 83, 145, 215)))
+            using (Brush door = new SolidBrush(Color.FromArgb(255, 84, 54, 34)))
+            using (Brush window = new SolidBrush(Color.FromArgb(255, 255, 238, 140)))
+            {
+                g.FillRectangle(wall, x + 16, y + 40, 128, 62);
+                g.FillRectangle(wallDark, x + 16, y + 90, 128, 12);
+                g.FillRectangle(roof, x, y + 24, 160, 24);
+                g.FillRectangle(roofLight, x + 18, y + 16, 124, 10);
+                g.FillRectangle(roof, x + 36, y + 4, 88, 20);
+                g.FillRectangle(door, x + 64, y + 64, 32, 38);
+                g.FillRectangle(window, x + 36, y + 58, 18, 16);
+                g.FillRectangle(window, x + 106, y + 58, 18, 16);
+            }
+
             using (Font font = new Font("Trebuchet MS", 15f, FontStyle.Bold))
             using (Brush brush = new SolidBrush(Color.FromArgb(255, 24, 56, 111)))
             using (StringFormat format = CenterFormat())
@@ -454,8 +467,21 @@ namespace ExplorersOfLegends
 
         private void DrawCave(Graphics g, int x, int y)
         {
-            FillRounded(g, new RectangleF(x, y, 138, 122), 22, Color.FromArgb(255, 102, 115, 130), Color.Transparent);
-            FillRounded(g, new RectangleF(x + 33, y + 34, 72, 88), 28, Color.FromArgb(255, 32, 42, 62), Color.Transparent);
+            using (Brush shadow = new SolidBrush(Color.FromArgb(78, 21, 46, 42)))
+            using (Brush stone = new SolidBrush(Color.FromArgb(255, 93, 108, 124)))
+            using (Brush light = new SolidBrush(Color.FromArgb(255, 126, 142, 157)))
+            using (Brush dark = new SolidBrush(Color.FromArgb(255, 36, 44, 62)))
+            using (Brush mouth = new SolidBrush(Color.FromArgb(255, 19, 26, 40)))
+            {
+                g.FillRectangle(shadow, x + 7, y + 106, 130, 18);
+                g.FillRectangle(stone, x + 18, y + 22, 102, 86);
+                g.FillRectangle(light, x + 34, y + 8, 70, 18);
+                g.FillRectangle(stone, x + 6, y + 42, 126, 38);
+                g.FillRectangle(dark, x + 22, y + 78, 96, 30);
+                g.FillRectangle(mouth, x + 44, y + 54, 52, 54);
+                g.FillRectangle(light, x + 18, y + 44, 22, 8);
+                g.FillRectangle(light, x + 98, y + 38, 20, 10);
+            }
             using (Font font = new Font("Trebuchet MS", 15f, FontStyle.Bold))
             using (Brush brush = new SolidBrush(Color.FromArgb(255, 24, 56, 111)))
             using (StringFormat format = CenterFormat())
@@ -468,36 +494,27 @@ namespace ExplorersOfLegends
         {
             int x = tileX * Tile + 13;
             int y = tileY * Tile + 9;
-            using (Pen post = new Pen(Color.FromArgb(255, 88, 57, 33), 6f))
+            using (Brush wood = new SolidBrush(Color.FromArgb(255, 103, 70, 40)))
+            using (Brush face = new SolidBrush(Color.FromArgb(255, 236, 202, 118)))
+            using (Brush ink = new SolidBrush(Color.FromArgb(255, 54, 63, 57)))
             {
-                g.DrawLine(post, x + 11, y + 30, x + 11, y + 56);
+                g.FillRectangle(wood, x + 9, y + 24, 6, 34);
+                g.FillRectangle(wood, x - 12, y + 4, 48, 26);
+                g.FillRectangle(face, x - 8, y + 8, 40, 16);
+                g.FillRectangle(ink, x - 2, y + 12, 28, 3);
+                g.FillRectangle(ink, x + 4, y + 18, 18, 3);
             }
-            FillRounded(g, new RectangleF(x - 10, y, 42, 30), 6, Color.FromArgb(255, 245, 209, 119), Color.FromArgb(255, 88, 57, 33));
         }
 
         private void DrawTileMarker(Graphics g, int x, int y, Color color, string kind)
         {
-            using (Brush brush = new SolidBrush(color))
-            using (Pen pen = new Pen(Color.FromArgb(255, 255, 248, 223), 3f))
-            {
-                if (kind == "stairs")
-                {
-                    PointF[] points = { new PointF(x, y - 16), new PointF(x + 16, y), new PointF(x, y + 16), new PointF(x - 16, y) };
-                    g.FillPolygon(brush, points);
-                    g.DrawPolygon(pen, points);
-                }
-                else
-                {
-                    g.FillEllipse(brush, x - 15, y - 15, 30, 30);
-                    g.DrawEllipse(pen, x - 15, y - 15, 30, 30);
-                }
-            }
+            atlas.DrawItem(g, kind, x, y, 36);
         }
 
         private void DrawPokemonToken(Graphics g, float x, float y, PokemonOption mon, float radius)
         {
             if (mon == null) return;
-            DrawSimpleToken(g, x, y, radius, mon.Color, mon.Accent, mon.Id);
+            atlas.DrawCreature(g, mon, x, y, (int)(radius * 2.3f));
         }
 
         private void DrawSimpleToken(Graphics g, float x, float y, float radius, Color color, Color accent, string kind)

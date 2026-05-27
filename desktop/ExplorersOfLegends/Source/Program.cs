@@ -16,6 +16,10 @@ namespace ExplorersOfLegends
             {
                 return RenderSnapshot.SaveTitle(args[1]);
             }
+            if (args.Length > 2 && args[0] == "--render-scene")
+            {
+                return RenderSnapshot.SaveScene(args[1], args[2]);
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

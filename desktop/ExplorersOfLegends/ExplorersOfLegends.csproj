@@ -25,6 +25,7 @@
     <Compile Include="Source\RenderSnapshot.cs" />
     <Compile Include="Source\SaveManager.cs" />
     <Compile Include="Source\SmokeTest.cs" />
+    <Compile Include="Source\SpriteAtlas.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

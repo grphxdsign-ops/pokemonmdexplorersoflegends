@@ -29,6 +29,8 @@ desktop/ExplorersOfLegends/
 
 The active desktop prototype is a C# Windows Forms app. It builds with `desktop\ExplorersOfLegends\build_desktop.cmd` and produces `desktop\ExplorersOfLegends\build\ExplorersOfLegends.exe`.
 
+The desktop renderer now uses an original pixel-art-style sprite atlas for tiles, props, items, and creature placeholders. PMDO remains a structural reference, but no PMDO or official game sprite files are imported into the current build.
+
 The browser reference prototype still lives under:
 
 ```text
@@ -62,6 +64,6 @@ Avoid over-detailed AI-looking paintings. Prefer simple, readable, game-native s
 
 - Split more of the desktop app into explicit scene/state/action classes as the playable slice grows.
 - Add richer dungeon rules: turn queue, move list, items, floor events.
-- Add sprite sheets or custom original sprites.
+- Expand the sprite atlas into external sprite-sheet loading once licensed or original assets exist.
 - Add menus for AP spending during hub play, not only at Chapter 1 completion.
 - Add a proper save-slot screen.
