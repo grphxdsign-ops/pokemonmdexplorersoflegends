@@ -59,3 +59,26 @@ RawAsset/Sprite/0001/Idle-Shadow.png
 If assets are found, the desktop renderer loads `Idle-Anim.png` first and falls back to `Walk-Anim.png`. Frame width and height come from `AnimData.xml`; the first frame is cropped to visible pixels and rendered with nearest-neighbor scaling.
 
 If assets are not found, the app uses the internal original placeholder atlas so the build still runs.
+
+## Local Missing-Sprite Generation
+
+Use this helper to generate local PMDO-format sheets for a missing species:
+
+```text
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/sprites/make_missing_sprite_assets.ps1 -SpeciesId 0832 -SpeciesName Dubwool
+```
+
+For Bulbasaur idle/sleep export plus Dubwool generation:
+
+```text
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/sprites/make_missing_sprite_assets.ps1 -ExportBulbasaur
+```
+
+Generated files remain under ignored local folders:
+
+```text
+pmdo/_downloads/RawAsset/Sprite/0832
+pmdo/_downloads/exports
+```
+
+The helper currently creates idle/sleep animation, offset, shadow, `AnimData.xml`, and `credits.txt` files. It is intended as a scaffold for missing Pokémon until proper hand-authored sheets are available.
