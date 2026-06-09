@@ -16,6 +16,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\ExternalSpriteProvider.cs" />
     <Compile Include="Source\GameData.cs" />
     <Compile Include="Source\GameForm.cs" />
     <Compile Include="Source\GameRenderer.cs" />

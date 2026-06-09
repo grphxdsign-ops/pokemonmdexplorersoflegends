@@ -43,6 +43,16 @@ namespace ExplorersOfLegends
                 if (!loaded.Flags.ChapterOneComplete) return 33;
                 if (loaded.PlayerAp.Speed != 1) return 34;
 
+                using (ExternalSpriteProvider sprites = new ExternalSpriteProvider())
+                {
+                    if (sprites.IsAvailable)
+                    {
+                        System.Drawing.Bitmap sprite;
+                        if (!sprites.TryGetCreature(GameData.Starters["steady"], out sprite)) return 40;
+                        if (sprite == null || sprite.Width <= 0 || sprite.Height <= 0) return 41;
+                    }
+                }
+
                 if (File.Exists(tempSave)) File.Delete(tempSave);
                 return 0;
             }

@@ -29,7 +29,7 @@ desktop/ExplorersOfLegends/
 
 The active desktop prototype is a C# Windows Forms app. It builds with `desktop\ExplorersOfLegends\build_desktop.cmd` and produces `desktop\ExplorersOfLegends\build\ExplorersOfLegends.exe`.
 
-The desktop renderer now uses an original pixel-art-style sprite atlas for tiles, props, items, and creature placeholders. PMDO remains a structural reference, but no PMDO or official game sprite files are imported into the current build.
+The desktop renderer now uses an original pixel-art-style sprite atlas for tiles, props, items, and fallback creature placeholders. It can also load PMDO-format sprites from a local `RawAsset` checkout when present; see `docs/11_PMDO_ASSET_LOADING.md`.
 
 The browser reference prototype still lives under:
 

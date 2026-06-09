@@ -56,4 +56,5 @@ No external engine, PMDO install, or Quest package is required for either protot
 - [Dream Domain Story Pass](docs/08_DREAM_DOMAIN_STORY_PASS.md)
 - [Playable MVP Scope](docs/09_PLAYABLE_MVP_SCOPE.md)
 - [Mechanics MVP Spec](docs/10_MECHANICS_MVP_SPEC.md)
+- [PMDO Asset Loading](docs/11_PMDO_ASSET_LOADING.md)
 - [Desktop Build README](desktop/ExplorersOfLegends/README.md)

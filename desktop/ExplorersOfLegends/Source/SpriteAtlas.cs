@@ -12,12 +12,14 @@ namespace ExplorersOfLegends
         private readonly Dictionary<string, Bitmap> tiles;
         private readonly Dictionary<string, Bitmap> itemSprites;
         private readonly Dictionary<string, Bitmap> creatureSprites;
+        private readonly ExternalSpriteProvider externalSprites;
 
         public SpriteAtlas()
         {
             tiles = new Dictionary<string, Bitmap>();
             itemSprites = new Dictionary<string, Bitmap>();
             creatureSprites = new Dictionary<string, Bitmap>();
+            externalSprites = new ExternalSpriteProvider();
         }
 
         public void Dispose()
@@ -25,6 +27,7 @@ namespace ExplorersOfLegends
             DisposeAll(tiles);
             DisposeAll(itemSprites);
             DisposeAll(creatureSprites);
+            externalSprites.Dispose();
         }
 
         public void DrawTile(Graphics g, string id, int x, int y, int size)
@@ -45,6 +48,13 @@ namespace ExplorersOfLegends
             using (Brush shadow = new SolidBrush(Color.FromArgb(64, 23, 28, 38)))
             {
                 g.FillRectangle(shadow, (int)(centerX - size * .34f), (int)(centerY + size * .29f), (int)(size * .68f), Math.Max(3, size / 8));
+            }
+
+            Bitmap external;
+            if (externalSprites.TryGetCreature(mon, out external))
+            {
+                DrawBitmapFit(g, external, centerX, centerY, size);
+                return;
             }
 
             Rectangle dest = new Rectangle((int)(centerX - size / 2f), (int)(centerY - size / 2f), size, size);
@@ -88,6 +98,15 @@ namespace ExplorersOfLegends
             g.SmoothingMode = SmoothingMode.None;
             g.DrawImage(bitmap, dest, 0, 0, bitmap.Width, bitmap.Height, GraphicsUnit.Pixel);
             g.Restore(state);
+        }
+
+        private void DrawBitmapFit(Graphics g, Bitmap bitmap, float centerX, float centerY, int size)
+        {
+            float scale = Math.Min(size / (float)bitmap.Width, size / (float)bitmap.Height);
+            int width = Math.Max(1, (int)Math.Round(bitmap.Width * scale));
+            int height = Math.Max(1, (int)Math.Round(bitmap.Height * scale));
+            Rectangle dest = new Rectangle((int)Math.Round(centerX - width / 2f), (int)Math.Round(centerY - height / 2f), width, height);
+            DrawBitmap(g, bitmap, dest);
         }
 
         private Bitmap CreateTile(string id)

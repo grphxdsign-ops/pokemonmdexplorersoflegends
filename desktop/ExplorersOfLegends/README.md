@@ -34,11 +34,33 @@ The build uses the Windows C# compiler that ships with .NET Framework, so it doe
 
 The desktop renderer now follows a small engine-style layout:
 
+- `ExternalSpriteProvider.cs` loads PMDO `RawAsset/Sprite` sheets from disk when available.
 - `SpriteAtlas.cs` builds reusable original tiles, items, and creature sprites.
 - `GameRenderer.cs` draws tile layers, props, sprites, windows, and scene snapshots.
 - Sprites and tiles use nearest-neighbor scaling for a Mystery Dungeon-style pixel look.
 
-No PMDO or official game sprite files are imported in this repo. The local PMDO folder currently contains empty data directories, so this build uses original placeholder art that can be swapped for licensed assets later.
+No PMDO or official game sprite files are committed in this repo. If a local `RawAsset` checkout exists, the app loads PMDO-format `Idle-Anim.png` or `Walk-Anim.png` sheets from disk and falls back to original placeholder sprites when missing.
+
+Default local asset path:
+
+```text
+pmdo\_downloads\RawAsset
+```
+
+Optional override:
+
+```text
+set EOL_RAW_ASSET_DIR=C:\path\to\RawAsset
+```
+
+Current loaded format:
+
+```text
+RawAsset\Sprite\0001\AnimData.xml
+RawAsset\Sprite\0001\Idle-Anim.png
+```
+
+The loader reads `AnimData.xml`, crops the first frame using the animation frame size, then scales it with nearest-neighbor rendering.
 
 ## Snapshot Checks
 
