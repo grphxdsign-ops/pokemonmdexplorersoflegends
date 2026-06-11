@@ -5,7 +5,10 @@ param(
   [switch]$ExportBulbasaur,
   [switch]$WritePreview,
   [string]$PreviewPath = "docs\assets\previews\bulbasaur-dubwool-idle-sleep.png",
-  [string]$GeneratedDubwoolReferencePath = "tools\sprites\references\dubwool-generated-reference.png"
+  [string]$GeneratedDubwoolReferencePath = "tools\sprites\references\dubwool-generated-reference.png",
+  [string]$TemplateSpeciesId = "0001",
+  [string]$AnimationReportPath = "docs\assets\previews\dubwool-animation-file-report.md",
+  [string]$AnimationContactSheetPath = "docs\assets\previews\dubwool-animation-contact-sheet.png"
 )
 
 $ErrorActionPreference = 'Stop'
@@ -400,6 +403,23 @@ function Get-DubwoolReferencePose($source, $col, $row) {
   return $cropped
 }
 
+function New-DubwoolPoseCache($referencePath) {
+  $resolvedReferencePath = Resolve-Path $referencePath
+  $source = [System.Drawing.Bitmap]::FromFile($resolvedReferencePath)
+  $cache = @{}
+  for ($row = 0; $row -lt 3; $row++) {
+    for ($col = 0; $col -lt 4; $col++) {
+      $cache["$col,$row"] = Get-DubwoolReferencePose $source $col $row
+    }
+  }
+  $source.Dispose()
+  return $cache
+}
+
+function Get-PoseFromCache($poseCache, $col, $row) {
+  return $poseCache["$col,$row"]
+}
+
 function Get-DubwoolIdleCell($directionIndex) {
   $cells = @(
     @(0, 0),
@@ -414,11 +434,125 @@ function Get-DubwoolIdleCell($directionIndex) {
   return $cells[$directionIndex]
 }
 
-function Draw-ReferencePoseIntoFrame($graphics, $pose, $frameX, $frameY, $frameWidth, $frameHeight, $maxDrawWidth, $maxDrawHeight, $verticalOffset) {
+function Get-DirectionVector($directionIndex) {
+  $vectors = @(
+    @(0, 1),
+    @(1, 1),
+    @(1, 0),
+    @(1, -1),
+    @(0, -1),
+    @(-1, -1),
+    @(-1, 0),
+    @(-1, 1)
+  )
+  if ($directionIndex -lt 0 -or $directionIndex -ge $vectors.Count) {
+    return @(0, 1)
+  }
+  return $vectors[$directionIndex]
+}
+
+function Get-GeneratedFrameSize($animationName) {
+  switch ($animationName) {
+    "Attack" { return New-Object System.Drawing.Size 320, 256 }
+    "Swing" { return New-Object System.Drawing.Size 320, 256 }
+    "Double" { return New-Object System.Drawing.Size 320, 256 }
+    "Hop" { return New-Object System.Drawing.Size 224, 320 }
+    "LeapForth" { return New-Object System.Drawing.Size 224, 320 }
+    "Sleep" { return New-Object System.Drawing.Size 192, 128 }
+    "EventSleep" { return New-Object System.Drawing.Size 192, 128 }
+    "Laying" { return New-Object System.Drawing.Size 192, 128 }
+    "Trip" { return New-Object System.Drawing.Size 224, 144 }
+    "Faint" { return New-Object System.Drawing.Size 224, 144 }
+    "Cringe" { return New-Object System.Drawing.Size 224, 160 }
+    "Tumble" { return New-Object System.Drawing.Size 224, 160 }
+    "TumbleBack" { return New-Object System.Drawing.Size 224, 160 }
+    "HitGround" { return New-Object System.Drawing.Size 224, 160 }
+    default { return New-Object System.Drawing.Size 192, 192 }
+  }
+}
+
+function Get-MaxDrawSize($animationName, $frameWidth, $frameHeight) {
+  $maxW = [math]::Max(32, $frameWidth - 18)
+  $maxH = [math]::Max(32, $frameHeight - 18)
+  if ($animationName -in @("Sleep", "EventSleep", "Laying", "Trip", "Faint", "Tumble", "TumbleBack", "HitGround")) {
+    $maxH = [math]::Max(32, $frameHeight - 22)
+  }
+  return New-Object System.Drawing.Size $maxW, $maxH
+}
+
+function Get-AnimationMotion($animationName, $frameIndex, $frameCount, $directionIndex) {
+  $vector = Get-DirectionVector $directionIndex
+  $dx = $vector[0]
+  $dy = $vector[1]
+  $x = 0
+  $y = 0
+  $scale = 1.0
+
+  switch ($animationName) {
+    "Idle" { $y = @(0, -3, 0)[$frameIndex % 3] }
+    "Walk" { $y = @(0, -6, -2, 0, -6, -2)[$frameIndex % 6]; $x = $dx * @(0, 4, 7, 4, 0, -3)[$frameIndex % 6] }
+    "Attack" { $lunge = @(0, 12, 26, 38, 30, 18, 8, 0, -4, 0, 0)[$frameIndex % 11]; $x = $dx * $lunge; $y = $dy * $lunge }
+    "Charge" { $lunge = @(0, 8, 16, 26, 36, 30, 22, 14, 6, 0)[$frameIndex % 10]; $x = $dx * $lunge; $y = $dy * $lunge }
+    "Shoot" { $lunge = @(0, 10, 20, 10, -8, 0)[$frameIndex % 6]; $x = $dx * $lunge; $y = $dy * $lunge }
+    "Swing" { $lunge = @(0, 12, 24, 34, 26, 10, -8, -4, 0)[$frameIndex % 9]; $x = $dx * $lunge; $y = $dy * $lunge }
+    "Double" { $lunge = @(0, 10, 22, 8, 0, -8, 0, 12, 26, 10, 0, -8, 0, 8, 0, 0)[$frameIndex % 16]; $x = $dx * $lunge; $y = $dy * $lunge }
+    "Hop" {
+      $t = if ($frameCount -le 1) { 0 } else { $frameIndex / [double]($frameCount - 1) }
+      $y = -[int][math]::Round([math]::Sin($t * [math]::PI) * 92)
+    }
+    "LeapForth" {
+      $t = if ($frameCount -le 1) { 0 } else { $frameIndex / [double]($frameCount - 1) }
+      $y = -[int][math]::Round([math]::Sin($t * [math]::PI) * 86)
+      $x = $dx * [int][math]::Round($t * 34)
+    }
+    "Shake" { $x = @(-8, 8, -8, 8, -4, 4)[$frameIndex % 6] }
+    "Hurt" { $x = @(-12, 8)[$frameIndex % 2]; $y = 4 }
+    "Pain" { $x = @(-10, 10, -8, 8, -6, 6, -4, 4, -3, 3, 0, 0)[$frameIndex % 12]; $y = 5 }
+    "DeepBreath" { $scale = @(1.0, 1.02, 1.05, 1.08, 1.05, 1.02, 1.0, .98, 1.0)[$frameIndex % 9] }
+    "Nod" { $y = @(0, 8, 0)[$frameIndex % 3] }
+    "Float" { $y = @(0, -8, -12, -6)[$frameIndex % 4] }
+    "Pose" { $y = @(0, -10, -16, -8, 0)[$frameIndex % 5]; $scale = @(1.0, 1.03, 1.06, 1.03, 1.0)[$frameIndex % 5] }
+    "Pull" { $x = -$dx * @(0, 8, 14, 18, 14, 8, 0)[$frameIndex % 7]; $y = -$dy * @(0, 8, 14, 18, 14, 8, 0)[$frameIndex % 7] }
+    "Wake" { $y = @(22, 14, 8, 2, -4, 0)[$frameIndex % 6] }
+    "Eat" { $y = @(0, 5, 0, 5)[$frameIndex % 4] }
+    "Tumble" { $x = @(0, 10, 18, 12, 0, -10, -18, -8)[$frameIndex % 8]; $y = @(4, 8, 12, 8, 4, 8, 12, 8)[$frameIndex % 8]; $scale = .92 }
+    "TumbleBack" { $x = @(0, -8, -18, -12, 0, 10, 18, 12, 4, 0)[$frameIndex % 10]; $y = @(4, 8, 12, 8, 4, 8, 12, 8, 5, 4)[$frameIndex % 10]; $scale = .92 }
+    "Sink" { $y = $frameIndex * 12; $scale = [math]::Max(.45, 1.0 - ($frameIndex * .045)) }
+    "Trip" { $y = 16; $x = @(0, 8, 16, 8, 0)[$frameIndex % 5] }
+    "Faint" { $y = @(0, 10, 22, 22)[$frameIndex % 4]; $scale = @(1.0, .96, .9, .9)[$frameIndex % 4] }
+    "Cringe" { $x = @(-8, 6)[$frameIndex % 2]; $scale = .94 }
+    "LostBalance" { $x = @(-12, 12)[$frameIndex % 2]; $y = 8 }
+    "HitGround" { $y = @(20, 14, 8, 4, 8, 4, 2, 0)[$frameIndex % 8]; $scale = .9 }
+  }
+
+  return [pscustomobject]@{ X = $x; Y = $y; Scale = $scale }
+}
+
+function Get-AnimationPoseCell($animationName, $directionIndex, $frameIndex, $frameCount) {
+  if ($animationName -in @("Sleep", "EventSleep", "Laying")) {
+    return @(@(2, 2), @(3, 2))[$frameIndex % 2]
+  }
+  if ($animationName -in @("Trip", "Faint", "Tumble", "TumbleBack", "HitGround")) {
+    return @(@(2, 2), @(3, 2))[$frameIndex % 2]
+  }
+  if ($animationName -eq "Wake" -and $frameIndex -lt 2) {
+    return @(@(2, 2), @(3, 2))[$frameIndex % 2]
+  }
+  if ($animationName -eq "Rotate") {
+    return Get-DubwoolIdleCell ($frameIndex % 8)
+  }
+  if ($animationName -in @("Eat", "DeepBreath", "Sit", "LookUp", "Cringe", "LostBalance")) {
+    return @(0, 0)
+  }
+  return Get-DubwoolIdleCell ($directionIndex % 8)
+}
+
+function Draw-ReferencePoseIntoFrame($graphics, $pose, $frameX, $frameY, $frameWidth, $frameHeight, $maxDrawWidth, $maxDrawHeight, $verticalOffset, $horizontalOffset, $scaleMultiplier) {
   $scale = [math]::Min($maxDrawWidth / $pose.Width, $maxDrawHeight / $pose.Height)
+  $scale = $scale * $scaleMultiplier
   $drawW = [math]::Max(1, [int][math]::Round($pose.Width * $scale))
   $drawH = [math]::Max(1, [int][math]::Round($pose.Height * $scale))
-  $drawX = $frameX + [int][math]::Floor(($frameWidth - $drawW) / 2)
+  $drawX = $frameX + [int][math]::Floor(($frameWidth - $drawW) / 2) + $horizontalOffset
   $drawY = $frameY + $frameHeight - $drawH - 8 + $verticalOffset
   $dest = New-Object System.Drawing.Rectangle $drawX, $drawY, $drawW, $drawH
 
@@ -430,94 +564,250 @@ function Draw-ReferencePoseIntoFrame($graphics, $pose, $frameX, $frameY, $frameW
   $graphics.Restore($state)
 }
 
-function New-Dubwool-ReferenceAnimSheet($path, $referencePath, $poseName, $frameWidth, $frameHeight, $frameCount, $directionCount, $maxDrawWidth, $maxDrawHeight) {
-  $resolvedReferencePath = Resolve-Path $referencePath
-  $source = [System.Drawing.Bitmap]::FromFile($resolvedReferencePath)
+function New-Dubwool-ReferenceAnimSheet($path, $poseCache, $animationName, $frameWidth, $frameHeight, $frameCount, $directionCount) {
   $bitmap = New-Bitmap ($frameWidth * $frameCount) ($frameHeight * $directionCount)
   $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
   $graphics.Clear([System.Drawing.Color]::Transparent)
-  $poseCache = @{}
-
-  function Get-CachedPose($col, $row) {
-    $key = "$col,$row"
-    if (-not $poseCache.ContainsKey($key)) {
-      $poseCache[$key] = Get-DubwoolReferencePose $source $col $row
-    }
-    return $poseCache[$key]
-  }
+  $maxDraw = Get-MaxDrawSize $animationName $frameWidth $frameHeight
 
   for ($dir = 0; $dir -lt $directionCount; $dir++) {
     for ($i = 0; $i -lt $frameCount; $i++) {
-      if ($poseName -eq "Sleep") {
-        $sleepCells = @(@(2, 2), @(3, 2))
-        $cell = $sleepCells[$i % $sleepCells.Count]
-        $verticalOffset = if (($i % 2) -eq 0) { 0 } else { 2 }
-      }
-      else {
-        $cell = Get-DubwoolIdleCell $dir
-        $verticalOffset = @(0, -3, 0)[$i % 3]
-      }
-
-      $pose = Get-CachedPose $cell[0] $cell[1]
-      Draw-ReferencePoseIntoFrame $graphics $pose ($i * $frameWidth) ($dir * $frameHeight) $frameWidth $frameHeight $maxDrawWidth $maxDrawHeight $verticalOffset
+      $cell = Get-AnimationPoseCell $animationName $dir $i $frameCount
+      $motion = Get-AnimationMotion $animationName $i $frameCount $dir
+      $pose = Get-PoseFromCache $poseCache $cell[0] $cell[1]
+      Draw-ReferencePoseIntoFrame $graphics $pose ($i * $frameWidth) ($dir * $frameHeight) $frameWidth $frameHeight $maxDraw.Width $maxDraw.Height $motion.Y $motion.X $motion.Scale
     }
   }
 
   $graphics.Dispose()
   $bitmap.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
   $bitmap.Dispose()
-  foreach ($pose in $poseCache.Values) {
-    $pose.Dispose()
-  }
-  $source.Dispose()
 }
 
-function Write-Dubwool-Files($root, $speciesId, $speciesName, $referencePath) {
+function Get-TemplateAnimations($root, $templateSpeciesId) {
+  $templateDir = Join-Path $root "Sprite\$templateSpeciesId"
+  $xmlPath = Join-Path $templateDir "AnimData.xml"
+  $xml = [xml](Get-Content -Raw -Path $xmlPath)
+  $animations = New-Object System.Collections.Generic.List[object]
+
+  foreach ($anim in $xml.AnimData.Anims.Anim) {
+    $name = [string]$anim.Name
+    $copyOf = if ($anim.CopyOf) { [string]$anim.CopyOf } else { "" }
+    $index = if ($anim.Index) { [int]$anim.Index } else { $null }
+    $durations = @()
+    if ($anim.Durations -and $anim.Durations.Duration) {
+      foreach ($duration in $anim.Durations.Duration) {
+        $durations += [int]$duration
+      }
+    }
+
+    $sourceFrameWidth = if ($anim.FrameWidth) { [int]$anim.FrameWidth } else { 0 }
+    $sourceFrameHeight = if ($anim.FrameHeight) { [int]$anim.FrameHeight } else { 0 }
+    $frameCount = $durations.Count
+    $directionCount = 0
+
+    if (-not $copyOf) {
+      $sheetPath = Join-Path $templateDir "$name-Anim.png"
+      if (Test-Path -LiteralPath $sheetPath) {
+        $sheet = [System.Drawing.Bitmap]::FromFile($sheetPath)
+        if ($sourceFrameWidth -gt 0 -and $sourceFrameHeight -gt 0) {
+          $frameCount = [math]::Max(1, [int]($sheet.Width / $sourceFrameWidth))
+          $directionCount = [math]::Max(1, [int]($sheet.Height / $sourceFrameHeight))
+        }
+        $sheet.Dispose()
+      }
+      if ($directionCount -le 0) { $directionCount = 1 }
+    }
+
+    $animations.Add([pscustomobject]@{
+      Name = $name
+      Index = $index
+      CopyOf = $copyOf
+      RushFrame = if ($anim.RushFrame) { [int]$anim.RushFrame } else { $null }
+      HitFrame = if ($anim.HitFrame) { [int]$anim.HitFrame } else { $null }
+      ReturnFrame = if ($anim.ReturnFrame) { [int]$anim.ReturnFrame } else { $null }
+      Durations = $durations
+      FrameCount = $frameCount
+      DirectionCount = $directionCount
+      SourceFrameWidth = $sourceFrameWidth
+      SourceFrameHeight = $sourceFrameHeight
+    })
+  }
+
+  return $animations
+}
+
+function Write-DubwoolAnimData($path, $animations, $frameSizeMap) {
+  $lines = New-Object System.Collections.Generic.List[string]
+  $lines.Add('<?xml version="1.0" ?>')
+  $lines.Add('<AnimData>')
+  $lines.Add("  <ShadowSize>1</ShadowSize>")
+  $lines.Add("  <Anims>")
+
+  foreach ($anim in $animations) {
+    $lines.Add("    <Anim>")
+    $lines.Add("      <Name>$($anim.Name)</Name>")
+    if ($null -ne $anim.Index) {
+      $lines.Add("      <Index>$($anim.Index)</Index>")
+    }
+    if ($anim.CopyOf) {
+      $lines.Add("      <CopyOf>$($anim.CopyOf)</CopyOf>")
+    }
+    else {
+      $size = $frameSizeMap[$anim.Name]
+      $lines.Add("      <FrameWidth>$($size.Width)</FrameWidth>")
+      $lines.Add("      <FrameHeight>$($size.Height)</FrameHeight>")
+      if ($null -ne $anim.RushFrame) { $lines.Add("      <RushFrame>$($anim.RushFrame)</RushFrame>") }
+      if ($null -ne $anim.HitFrame) { $lines.Add("      <HitFrame>$($anim.HitFrame)</HitFrame>") }
+      if ($null -ne $anim.ReturnFrame) { $lines.Add("      <ReturnFrame>$($anim.ReturnFrame)</ReturnFrame>") }
+      $lines.Add("      <Durations>")
+      foreach ($duration in $anim.Durations) {
+        $lines.Add("        <Duration>$duration</Duration>")
+      }
+      $lines.Add("      </Durations>")
+    }
+    $lines.Add("    </Anim>")
+  }
+
+  $lines.Add("  </Anims>")
+  $lines.Add("</AnimData>")
+  $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+  [System.IO.File]::WriteAllText($path, (($lines -join "`n") + "`n"), $utf8NoBom)
+}
+
+function Write-DubwoolAnimationReport($path, $root, $speciesId, $animations, $frameSizeMap) {
+  $resolvedPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($path)
+  New-Dir (Split-Path -Parent $resolvedPath)
+  $lines = New-Object System.Collections.Generic.List[string]
+  $lines.Add('# Dubwool Animation File Report')
+  $lines.Add('')
+  $lines.Add("- Generated on: $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss zzz'))")
+  $lines.Add('- Template species: Bulbasaur (0001)')
+  $lines.Add("- Target species: Dubwool ($speciesId)")
+  $lines.Add('- Reference: tools/sprites/references/dubwool-generated-reference.png')
+  $lines.Add('- CopyOf entries preserved without physical sheets, matching Bulbasaur behavior.')
+  $lines.Add('')
+  $lines.Add('| Animation | Frames | Directions | Frame size | Files |')
+  $lines.Add('| --- | ---: | ---: | --- | --- |')
+
+  $spriteDir = Join-Path $root "Sprite\$speciesId"
+  foreach ($anim in $animations) {
+    if ($anim.CopyOf) {
+      $lines.Add("| $($anim.Name) | copy | copy | CopyOf $($anim.CopyOf) | AnimData only |")
+      continue
+    }
+    $size = $frameSizeMap[$anim.Name]
+    $files = @("$($anim.Name)-Anim.png", "$($anim.Name)-Offsets.png", "$($anim.Name)-Shadow.png")
+    $missing = @()
+    foreach ($file in $files) {
+      if (-not (Test-Path -LiteralPath (Join-Path $spriteDir $file))) {
+        $missing += $file
+      }
+    }
+    $status = if ($missing.Count -eq 0) { "ok" } else { "missing: $($missing -join ', ')" }
+    $lines.Add("| $($anim.Name) | $($anim.FrameCount) | $($anim.DirectionCount) | $($size.Width)x$($size.Height) | $status |")
+  }
+
+  $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+  [System.IO.File]::WriteAllText($resolvedPath, (($lines -join "`n") + "`n"), $utf8NoBom)
+  return $resolvedPath
+}
+
+function Draw-CroppedFrame($graphics, $sheetPath, $frameWidth, $frameHeight, $destX, $destY, $boxSize) {
+  $sheet = [System.Drawing.Bitmap]::FromFile($sheetPath)
+  $frame = New-Bitmap $frameWidth $frameHeight
+  $frameGraphics = [System.Drawing.Graphics]::FromImage($frame)
+  $frameGraphics.DrawImage($sheet, (New-Object System.Drawing.Rectangle 0, 0, $frameWidth, $frameHeight), (New-Object System.Drawing.Rectangle 0, 0, $frameWidth, $frameHeight), [System.Drawing.GraphicsUnit]::Pixel)
+  $frameGraphics.Dispose()
+  $sheet.Dispose()
+
+  $bounds = Get-OpaqueBounds $frame
+  if ($bounds.Width -le 0 -or $bounds.Height -le 0) {
+    $frame.Dispose()
+    return
+  }
+
+  $scale = [math]::Min($boxSize / $bounds.Width, $boxSize / $bounds.Height)
+  $drawW = [math]::Max(1, [int][math]::Round($bounds.Width * $scale))
+  $drawH = [math]::Max(1, [int][math]::Round($bounds.Height * $scale))
+  $dest = New-Object System.Drawing.Rectangle ($destX + [int][math]::Floor(($boxSize - $drawW) / 2)), ($destY + [int][math]::Floor(($boxSize - $drawH) / 2)), $drawW, $drawH
+  $graphics.DrawImage($frame, $dest, $bounds, [System.Drawing.GraphicsUnit]::Pixel)
+  $frame.Dispose()
+}
+
+function Write-DubwoolAnimationContactSheet($path, $root, $speciesId, $animations, $frameSizeMap) {
+  $sheetAnims = @($animations | Where-Object { -not $_.CopyOf })
+  $cols = 5
+  $tileW = 210
+  $tileH = 188
+  $boxSize = 128
+  $margin = 36
+  $headerH = 90
+  $rows = [math]::Max(1, [int][math]::Ceiling($sheetAnims.Count / $cols))
+  $width = ($cols * $tileW) + ($margin * 2)
+  $height = $headerH + ($rows * $tileH) + $margin
+  $resolvedPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($path)
+  New-Dir (Split-Path -Parent $resolvedPath)
+
+  $canvas = New-Bitmap $width $height
+  $graphics = [System.Drawing.Graphics]::FromImage($canvas)
+  $graphics.Clear([System.Drawing.Color]::FromArgb(255, 246, 248, 250))
+  $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
+  $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
+  $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
+  Draw-Text $graphics "Dubwool Animation Coverage" $margin 24 24 $true
+  Draw-Text $graphics "$($sheetAnims.Count) physical animations generated from the reference PNG." $margin 58 13 $false
+
+  $spriteDir = Join-Path $root "Sprite\$speciesId"
+  for ($i = 0; $i -lt $sheetAnims.Count; $i++) {
+    $anim = $sheetAnims[$i]
+    $col = $i % $cols
+    $row = [int][math]::Floor($i / $cols)
+    $x = $margin + ($col * $tileW)
+    $y = $headerH + ($row * $tileH)
+    Draw-Checker $graphics $x ($y + 10) $boxSize $boxSize
+    $size = $frameSizeMap[$anim.Name]
+    Draw-CroppedFrame $graphics (Join-Path $spriteDir "$($anim.Name)-Anim.png") $size.Width $size.Height $x ($y + 10) $boxSize
+    Draw-Text $graphics $anim.Name $x ($y + 146) 11 $true
+    Draw-Text $graphics ("{0}f x {1}dir" -f $anim.FrameCount, $anim.DirectionCount) $x ($y + 164) 9 $false
+  }
+
+  $graphics.Dispose()
+  $canvas.Save($resolvedPath, [System.Drawing.Imaging.ImageFormat]::Png)
+  $canvas.Dispose()
+  return $resolvedPath
+}
+
+function Write-Dubwool-Files($root, $speciesId, $speciesName, $referencePath, $templateSpeciesId, $reportPath, $contactSheetPath) {
   $spriteDir = Join-Path $root "Sprite\$speciesId"
   New-Dir $spriteDir
 
-  New-Dubwool-ReferenceAnimSheet (Join-Path $spriteDir "Idle-Anim.png") $referencePath "Idle" 192 192 3 8 174 174
-  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 192 192 3 8
-  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 192 192 3 8
+  $animations = Get-TemplateAnimations $root $templateSpeciesId
+  $poseCache = New-DubwoolPoseCache $referencePath
+  $frameSizeMap = @{}
 
-  New-Dubwool-ReferenceAnimSheet (Join-Path $spriteDir "Sleep-Anim.png") $referencePath "Sleep" 192 128 2 1 176 110
-  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 192 128 2 1
-  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 192 128 2 1
+  foreach ($anim in $animations) {
+    if ($anim.CopyOf) { continue }
+    $size = Get-GeneratedFrameSize $anim.Name
+    $frameSizeMap[$anim.Name] = $size
+    New-Dubwool-ReferenceAnimSheet (Join-Path $spriteDir "$($anim.Name)-Anim.png") $poseCache $anim.Name $size.Width $size.Height $anim.FrameCount $anim.DirectionCount
+    New-ShadowSheet (Join-Path $spriteDir "$($anim.Name)-Shadow.png") $size.Width $size.Height $anim.FrameCount $anim.DirectionCount
+    New-OffsetSheet (Join-Path $spriteDir "$($anim.Name)-Offsets.png") $size.Width $size.Height $anim.FrameCount $anim.DirectionCount
+  }
 
-  @"
-<?xml version="1.0" ?>
-<AnimData>
-  <ShadowSize>1</ShadowSize>
-  <Anims>
-    <Anim>
-      <Name>Idle</Name>
-      <Index>0</Index>
-      <FrameWidth>192</FrameWidth>
-      <FrameHeight>192</FrameHeight>
-      <Durations>
-        <Duration>40</Duration>
-        <Duration>6</Duration>
-        <Duration>6</Duration>
-      </Durations>
-    </Anim>
-    <Anim>
-      <Name>Sleep</Name>
-      <Index>1</Index>
-      <FrameWidth>192</FrameWidth>
-      <FrameHeight>128</FrameHeight>
-      <Durations>
-        <Duration>30</Duration>
-        <Duration>35</Duration>
-      </Durations>
-    </Anim>
-  </Anims>
-</AnimData>
-"@ | Set-Content -Encoding UTF8 (Join-Path $spriteDir "AnimData.xml")
+  Write-DubwoolAnimData (Join-Path $spriteDir "AnimData.xml") $animations $frameSizeMap
 
   @"
 Generated local PMDO-format sprites for $speciesName.
 Design reference: tools/sprites/references/dubwool-generated-reference.png.
 "@ | Set-Content -Encoding UTF8 (Join-Path $spriteDir "credits.txt")
+
+  $report = Write-DubwoolAnimationReport $reportPath $root $speciesId $animations $frameSizeMap
+  $contact = Write-DubwoolAnimationContactSheet $contactSheetPath $root $speciesId $animations $frameSizeMap
+
+  foreach ($pose in $poseCache.Values) {
+    $pose.Dispose()
+  }
 
   return $spriteDir
 }
@@ -616,7 +906,7 @@ if ($ExportBulbasaur) {
   Write-Output "Bulbasaur export: $zip"
 }
 
-$dubwoolDir = Write-Dubwool-Files $resolvedRoot $SpeciesId $SpeciesName $GeneratedDubwoolReferencePath
+$dubwoolDir = Write-Dubwool-Files $resolvedRoot $SpeciesId $SpeciesName $GeneratedDubwoolReferencePath $TemplateSpeciesId $AnimationReportPath $AnimationContactSheetPath
 Write-Output "$SpeciesName sprite sheets: $dubwoolDir"
 
 if ($WritePreview) {
