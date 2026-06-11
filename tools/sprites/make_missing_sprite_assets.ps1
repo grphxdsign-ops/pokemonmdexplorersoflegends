@@ -237,7 +237,7 @@ function Draw-Dubwool-Frame($graphics, $originX, $originY, $frameWidth, $frameHe
   $graphics.Restore($state)
 }
 
-function New-Dubwool-AnimSheet($path, $pose, $frameWidth, $frameHeight, $frameCount, $directionCount) {
+function New-Dubwool-AnimSheet($path, $pose, $frameWidth, $frameHeight, $frameCount, $directionCount, $sourceFrameWidth, $sourceFrameHeight, $maxDrawWidth, $maxDrawHeight) {
   $bitmap = New-Bitmap ($frameWidth * $frameCount) ($frameHeight * $directionCount)
   $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
   $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
@@ -245,7 +245,22 @@ function New-Dubwool-AnimSheet($path, $pose, $frameWidth, $frameHeight, $frameCo
   $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
   for ($dir = 0; $dir -lt $directionCount; $dir++) {
     for ($i = 0; $i -lt $frameCount; $i++) {
-      Draw-Dubwool-Frame $graphics ($i * $frameWidth) ($dir * $frameHeight) $frameWidth $frameHeight $pose $i $dir
+      $sourceFrame = New-Bitmap $sourceFrameWidth $sourceFrameHeight
+      $sourceGraphics = [System.Drawing.Graphics]::FromImage($sourceFrame)
+      $sourceGraphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
+      $sourceGraphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
+      $sourceGraphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
+      Draw-Dubwool-Frame $sourceGraphics 0 0 $sourceFrameWidth $sourceFrameHeight $pose $i $dir
+      $sourceGraphics.Dispose()
+
+      $scale = [math]::Min($maxDrawWidth / $sourceFrameWidth, $maxDrawHeight / $sourceFrameHeight)
+      $drawW = [math]::Max(1, [int][math]::Floor($sourceFrameWidth * $scale))
+      $drawH = [math]::Max(1, [int][math]::Floor($sourceFrameHeight * $scale))
+      $drawX = ($i * $frameWidth) + [int][math]::Floor(($frameWidth - $drawW) / 2)
+      $drawY = ($dir * $frameHeight) + $frameHeight - $drawH - $(if ($pose -eq "Sleep") { 1 } else { 3 })
+      $dest = New-Object System.Drawing.Rectangle $drawX, $drawY, $drawW, $drawH
+      $graphics.DrawImage($sourceFrame, $dest, 0, 0, $sourceFrameWidth, $sourceFrameHeight, [System.Drawing.GraphicsUnit]::Pixel)
+      $sourceFrame.Dispose()
     }
   }
   $graphics.Dispose()
@@ -259,7 +274,8 @@ function New-ShadowSheet($path, $frameWidth, $frameHeight, $frameCount, $directi
   $shadow = [System.Drawing.Color]::FromArgb(96, 0, 0, 0)
   for ($dir = 0; $dir -lt $directionCount; $dir++) {
     for ($i = 0; $i -lt $frameCount; $i++) {
-      Fill-Rect $graphics (($i * $frameWidth) + [math]::Floor($frameWidth / 2) - 11) (($dir * $frameHeight) + $frameHeight - 7) 22 4 $shadow
+      $shadowWidth = if ($frameWidth -le 24) { 16 } else { 18 }
+      Fill-Rect $graphics (($i * $frameWidth) + [math]::Floor($frameWidth / 2) - [math]::Floor($shadowWidth / 2)) (($dir * $frameHeight) + $frameHeight - 6) $shadowWidth 3 $shadow
     }
   }
   $graphics.Dispose()
@@ -277,13 +293,13 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName) {
   $spriteDir = Join-Path $root "Sprite\$speciesId"
   New-Dir $spriteDir
 
-  New-Dubwool-AnimSheet (Join-Path $spriteDir "Idle-Anim.png") "Idle" 40 40 3 8
-  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 40 40 3 8
-  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 40 40 3 8
+  New-Dubwool-AnimSheet (Join-Path $spriteDir "Idle-Anim.png") "Idle" 32 40 3 8 40 40 24 26
+  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 32 40 3 8
+  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 32 40 3 8
 
-  New-Dubwool-AnimSheet (Join-Path $spriteDir "Sleep-Anim.png") "Sleep" 32 24 2 1
-  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 32 24 2 1
-  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 32 24 2 1
+  New-Dubwool-AnimSheet (Join-Path $spriteDir "Sleep-Anim.png") "Sleep" 24 24 2 1 32 24 21 22
+  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 24 24 2 1
+  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 24 24 2 1
 
   @"
 <?xml version="1.0" ?>
@@ -293,7 +309,7 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName) {
     <Anim>
       <Name>Idle</Name>
       <Index>0</Index>
-      <FrameWidth>40</FrameWidth>
+      <FrameWidth>32</FrameWidth>
       <FrameHeight>40</FrameHeight>
       <Durations>
         <Duration>40</Duration>
@@ -304,7 +320,7 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName) {
     <Anim>
       <Name>Sleep</Name>
       <Index>1</Index>
-      <FrameWidth>32</FrameWidth>
+      <FrameWidth>24</FrameWidth>
       <FrameHeight>24</FrameHeight>
       <Durations>
         <Duration>30</Duration>
@@ -396,12 +412,12 @@ function Write-ComparisonPreview($root, $previewPath) {
   Draw-SheetRegion $graphics $bulbSleep 0 0 48 24 42 440 7
 
   Draw-Text $graphics "Dubwool Idle: generated first row" 42 650 18 $true
-  Draw-SheetRegion $graphics $dubIdle 0 0 120 40 42 690 5
+  Draw-SheetRegion $graphics $dubIdle 0 0 96 40 42 690 5
   Draw-Text $graphics "Dubwool Sleep: generated" 42 930 18 $true
-  Draw-SheetRegion $graphics $dubSleep 0 0 64 24 42 970 7
+  Draw-SheetRegion $graphics $dubSleep 0 0 48 24 42 970 7
 
   Draw-Text $graphics "Dubwool Full Idle Atlas" 650 126 18 $true
-  Draw-SheetRegion $graphics $dubIdle 0 0 120 320 650 166 3
+  Draw-SheetRegion $graphics $dubIdle 0 0 96 320 650 166 3
 
   $graphics.Dispose()
   $canvas.Save($resolvedPreviewPath, [System.Drawing.Imaging.ImageFormat]::Png)

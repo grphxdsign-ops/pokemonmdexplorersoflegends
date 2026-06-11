@@ -41,7 +41,14 @@ function Fill-Ellipse($graphics, $x, $y, $w, $h, $color) {
 
 function Get-DexNameMap($dexMax) {
   $map = @{}
-  $index = Invoke-RestMethod -Uri "https://pokeapi.co/api/v2/pokemon-species?limit=2000" -Headers @{ "User-Agent" = "PokeRom sprite generator" }
+  try {
+    $index = Invoke-RestMethod -Uri "https://pokeapi.co/api/v2/pokemon-species?limit=2000" -Headers @{ "User-Agent" = "PokeRom sprite generator" }
+  }
+  catch {
+    Write-Warning "Could not load PokeAPI species names; falling back to local generated credits."
+    return $map
+  }
+
   foreach ($entry in $index.results) {
     if ($entry.url -match '/pokemon-species/(\d+)/?$') {
       $id = [int]$Matches[1]
@@ -51,6 +58,18 @@ function Get-DexNameMap($dexMax) {
     }
   }
   return $map
+}
+
+function Get-LocalSpeciesName($spriteRoot, $id) {
+  $dexId = Format-DexId $id
+  $credits = Join-Path $spriteRoot "$dexId\credits.txt"
+  if (Test-Path -LiteralPath $credits) {
+    $text = Get-Content -Raw -Path $credits
+    if ($text -match 'Generated local PMDO-format sprites for ([^\r\n\(]+)') {
+      return $Matches[1].Trim()
+    }
+  }
+  return "pokemon-$id"
 }
 
 function Format-DexId($id) {
@@ -273,8 +292,8 @@ function New-AnimSheetFromReference($path, $sourcePath, $pose, $frameWidth, $fra
         $mirror = $true
       }
 
-      $maxWidth = if ($pose -eq "Sleep") { 29 } else { 32 }
-      $maxHeight = if ($pose -eq "Sleep") { 22 } else { 33 }
+      $maxWidth = if ($pose -eq "Sleep") { 23 } else { 30 }
+      $maxHeight = if ($pose -eq "Sleep") { 22 } else { 32 }
       $frame = Draw-ReferenceIntoFrame $source $bounds $frameWidth $frameHeight $maxWidth $maxHeight $bob $mirror $mode
       $dest = New-Object System.Drawing.Rectangle ($frameIndex * $frameWidth), ($dir * $frameHeight), $frameWidth, $frameHeight
       $graphics.DrawImage($frame, $dest, 0, 0, $frameWidth, $frameHeight, [System.Drawing.GraphicsUnit]::Pixel)
@@ -318,7 +337,7 @@ function Write-AnimData($path) {
     <Anim>
       <Name>Idle</Name>
       <Index>0</Index>
-      <FrameWidth>40</FrameWidth>
+      <FrameWidth>32</FrameWidth>
       <FrameHeight>40</FrameHeight>
       <Durations>
         <Duration>40</Duration>
@@ -329,7 +348,7 @@ function Write-AnimData($path) {
     <Anim>
       <Name>Sleep</Name>
       <Index>1</Index>
-      <FrameWidth>32</FrameWidth>
+      <FrameWidth>24</FrameWidth>
       <FrameHeight>24</FrameHeight>
       <Durations>
         <Duration>30</Duration>
@@ -346,13 +365,13 @@ function Write-GeneratedSpecies($root, $id, $name, $sourcePath) {
   $spriteDir = Join-Path $root "Sprite\$dexId"
   New-Dir $spriteDir
 
-  New-AnimSheetFromReference (Join-Path $spriteDir "Idle-Anim.png") $sourcePath "Idle" 40 40 3 8
-  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 40 40 3 8
-  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 40 40 3 8
+  New-AnimSheetFromReference (Join-Path $spriteDir "Idle-Anim.png") $sourcePath "Idle" 32 40 3 8
+  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 32 40 3 8
+  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 32 40 3 8
 
-  New-AnimSheetFromReference (Join-Path $spriteDir "Sleep-Anim.png") $sourcePath "Sleep" 32 24 2 1
-  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 32 24 2 1
-  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 32 24 2 1
+  New-AnimSheetFromReference (Join-Path $spriteDir "Sleep-Anim.png") $sourcePath "Sleep" 24 24 2 1
+  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 24 24 2 1
+  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 24 24 2 1
 
   Write-AnimData (Join-Path $spriteDir "AnimData.xml")
   @"
@@ -389,12 +408,12 @@ function Test-GeneratedSpecies($spriteDir) {
   $idleInfo = Get-ImageInfo $idle
   $sleepInfo = Get-ImageInfo $sleep
   $ok = (
-    $idleInfo.Width -eq 120 -and
+    $idleInfo.Width -eq 96 -and
     $idleInfo.Height -eq 320 -and
-    $sleepInfo.Width -eq 64 -and
+    $sleepInfo.Width -eq 48 -and
     $sleepInfo.Height -eq 24 -and
-    $idleInfo.NonTransparent -gt 1500 -and
-    $sleepInfo.NonTransparent -gt 100
+    $idleInfo.NonTransparent -gt 900 -and
+    $sleepInfo.NonTransparent -gt 70
   )
   return [pscustomobject]@{
     Ok = $ok
@@ -445,7 +464,7 @@ function Write-ContactSheet($root, $rows, $path) {
   $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
 
   Draw-Text $graphics "Generated Missing Pokemon PMDO Sprite Pass" $margin 24 24 $true
-  Draw-Text $graphics "$($rows.Count) generated species, first idle frame shown at 3x scale." $margin 60 13 $false
+  Draw-Text $graphics "$($rows.Count) generated species, first 32x40 idle frame shown at 3x scale." $margin 60 13 $false
 
   for ($i = 0; $i -lt $rows.Count; $i++) {
     $row = $rows[$i]
@@ -453,12 +472,12 @@ function Write-ContactSheet($root, $rows, $path) {
     $tileRow = [int][math]::Floor($i / $cols)
     $x = $margin + ($col * $tileW)
     $y = $headerH + ($tileRow * $tileH)
-    Draw-Checker $graphics $x ($y + 24) 120 120
+    Draw-Checker $graphics $x ($y + 24) 96 120
 
     $idle = Join-Path $root ("Sprite\{0}\Idle-Anim.png" -f $row.DexId)
     $bitmap = [System.Drawing.Bitmap]::FromFile($idle)
-    $dest = New-Object System.Drawing.Rectangle $x, ($y + 24), 120, 120
-    $src = New-Object System.Drawing.Rectangle 0, 0, 40, 40
+    $dest = New-Object System.Drawing.Rectangle $x, ($y + 24), 96, 120
+    $src = New-Object System.Drawing.Rectangle 0, 0, 32, 40
     $graphics.DrawImage($bitmap, $dest, $src, [System.Drawing.GraphicsUnit]::Pixel)
     $bitmap.Dispose()
 
@@ -492,7 +511,8 @@ function Write-Report($path, $dexMax, $initialMissing, $rows, $failures) {
     $status = if ($row.Ok) { "ok" } else { "failed" }
     $lines.Add("| $($row.DexId) | $($row.Name) | $($row.IdlePixels) | $($row.SleepPixels) | $status |")
   }
-  Set-Content -Encoding UTF8 -Path $resolvedPath -Value $lines
+  $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+  [System.IO.File]::WriteAllText($resolvedPath, (($lines -join "`n") + "`n"), $utf8NoBom)
   return $resolvedPath
 }
 
@@ -517,7 +537,7 @@ $failures = New-Object System.Collections.Generic.List[object]
 
 foreach ($id in $missing) {
   $dexId = Format-DexId $id
-  $name = if ($nameMap.ContainsKey($id)) { $nameMap[$id] } else { "pokemon-$id" }
+  $name = if ($nameMap.ContainsKey($id)) { $nameMap[$id] } else { Get-LocalSpeciesName $spriteRoot $id }
   Write-Output "Generating $dexId $name"
   $sourcePath = Download-ReferenceArt $id $resolvedCache $RefreshReferenceArt
   $spriteDir = Write-GeneratedSpecies $resolvedRoot $id $name $sourcePath
