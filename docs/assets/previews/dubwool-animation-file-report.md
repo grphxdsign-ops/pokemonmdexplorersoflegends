@@ -1,9 +1,12 @@
 # Dubwool Animation File Report
 
-- Generated on: 2026-06-10 21:55:42 -04:00
+- Generated on: 2026-06-11 10:31:44 -04:00
 - Template species: Bulbasaur (0001)
 - Target species: Dubwool (0832)
 - Reference: tools/sprites/references/dubwool-generated-reference.png
+- Combat reference: tools/sprites/references/dubwool-action-combat-reference.png
+- Status reference: tools/sprites/references/dubwool-action-status-reference.png
+- Dialogue reference: tools/sprites/references/dubwool-action-dialogue-reference.png
 - CopyOf entries preserved without physical sheets, matching Bulbasaur behavior.
 
 | Animation | Frames | Directions | Frame size | Files |
