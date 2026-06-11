@@ -4,7 +4,8 @@ param(
   [string]$SpeciesName = "Dubwool",
   [switch]$ExportBulbasaur,
   [switch]$WritePreview,
-  [string]$PreviewPath = "docs\assets\previews\bulbasaur-dubwool-idle-sleep.png"
+  [string]$PreviewPath = "docs\assets\previews\bulbasaur-dubwool-idle-sleep.png",
+  [string]$GeneratedDubwoolReferencePath = "tools\sprites\references\dubwool-generated-reference.png"
 )
 
 $ErrorActionPreference = 'Stop'
@@ -274,8 +275,9 @@ function New-ShadowSheet($path, $frameWidth, $frameHeight, $frameCount, $directi
   $shadow = [System.Drawing.Color]::FromArgb(96, 0, 0, 0)
   for ($dir = 0; $dir -lt $directionCount; $dir++) {
     for ($i = 0; $i -lt $frameCount; $i++) {
-      $shadowWidth = if ($frameWidth -le 24) { 16 } else { 18 }
-      Fill-Rect $graphics (($i * $frameWidth) + [math]::Floor($frameWidth / 2) - [math]::Floor($shadowWidth / 2)) (($dir * $frameHeight) + $frameHeight - 6) $shadowWidth 3 $shadow
+      $shadowWidth = [math]::Max(16, [int][math]::Round($frameWidth * 0.45))
+      $shadowHeight = [math]::Max(3, [int][math]::Round($frameHeight * 0.04))
+      Fill-Rect $graphics (($i * $frameWidth) + [math]::Floor($frameWidth / 2) - [math]::Floor($shadowWidth / 2)) (($dir * $frameHeight) + $frameHeight - [math]::Max(8, [int][math]::Round($frameHeight * 0.09))) $shadowWidth $shadowHeight $shadow
     }
   }
   $graphics.Dispose()
@@ -289,17 +291,198 @@ function New-OffsetSheet($path, $frameWidth, $frameHeight, $frameCount, $directi
   $bitmap.Dispose()
 }
 
-function Write-Dubwool-Files($root, $speciesId, $speciesName) {
+function Test-BackgroundPixel($color) {
+  if ($color.A -eq 0) { return $true }
+  $max = [math]::Max($color.R, [math]::Max($color.G, $color.B))
+  $min = [math]::Min($color.R, [math]::Min($color.G, $color.B))
+  $brightness = ($color.R + $color.G + $color.B) / 3.0
+  $saturation = if ($max -le 0) { 0 } else { ($max - $min) / [double]$max }
+  return (($brightness -ge 185 -and $saturation -le 0.12) -or ($brightness -ge 214 -and $saturation -le 0.25) -or ($min -ge 235))
+}
+
+function Clear-ConnectedBackground($bitmap) {
+  $width = $bitmap.Width
+  $height = $bitmap.Height
+  $visited = New-Object bool[] ($width * $height)
+  $queue = New-Object 'System.Collections.Generic.Queue[int]'
+
+  function Add-BackgroundPoint($x, $y) {
+    if ($x -lt 0 -or $y -lt 0 -or $x -ge $width -or $y -ge $height) { return }
+    $index = ($y * $width) + $x
+    if ($visited[$index]) { return }
+    if (-not (Test-BackgroundPixel $bitmap.GetPixel($x, $y))) { return }
+    $visited[$index] = $true
+    $queue.Enqueue($index)
+  }
+
+  for ($x = 0; $x -lt $width; $x++) {
+    Add-BackgroundPoint $x 0
+    Add-BackgroundPoint $x ($height - 1)
+  }
+  for ($y = 0; $y -lt $height; $y++) {
+    Add-BackgroundPoint 0 $y
+    Add-BackgroundPoint ($width - 1) $y
+  }
+
+  while ($queue.Count -gt 0) {
+    $index = $queue.Dequeue()
+    $x = $index % $width
+    $y = [int][math]::Floor($index / $width)
+    Add-BackgroundPoint ($x + 1) $y
+    Add-BackgroundPoint ($x - 1) $y
+    Add-BackgroundPoint $x ($y + 1)
+    Add-BackgroundPoint $x ($y - 1)
+  }
+
+  for ($y = 0; $y -lt $height; $y++) {
+    for ($x = 0; $x -lt $width; $x++) {
+      if ($visited[($y * $width) + $x]) {
+        $bitmap.SetPixel($x, $y, [System.Drawing.Color]::Transparent)
+      }
+    }
+  }
+}
+
+function Get-OpaqueBounds($bitmap) {
+  $minX = $bitmap.Width
+  $minY = $bitmap.Height
+  $maxX = -1
+  $maxY = -1
+  for ($y = 0; $y -lt $bitmap.Height; $y++) {
+    for ($x = 0; $x -lt $bitmap.Width; $x++) {
+      if ($bitmap.GetPixel($x, $y).A -le 0) { continue }
+      if ($x -lt $minX) { $minX = $x }
+      if ($y -lt $minY) { $minY = $y }
+      if ($x -gt $maxX) { $maxX = $x }
+      if ($y -gt $maxY) { $maxY = $y }
+    }
+  }
+  if ($maxX -lt 0 -or $maxY -lt 0) {
+    return [System.Drawing.Rectangle]::Empty
+  }
+  return [System.Drawing.Rectangle]::FromLTRB($minX, $minY, ($maxX + 1), ($maxY + 1))
+}
+
+function Get-DubwoolReferenceCellRect($source, $col, $row) {
+  $x0 = [int][math]::Floor($source.Width * $col / 4.0)
+  $x1 = [int][math]::Floor($source.Width * ($col + 1) / 4.0)
+  $y0 = [int][math]::Floor($source.Height * $row / 3.0)
+  $y1 = [int][math]::Floor($source.Height * ($row + 1) / 3.0)
+  return New-Object System.Drawing.Rectangle $x0, $y0, ($x1 - $x0), ($y1 - $y0)
+}
+
+function Get-DubwoolReferencePose($source, $col, $row) {
+  $cell = Get-DubwoolReferenceCellRect $source $col $row
+  $bitmap = New-Bitmap $cell.Width $cell.Height
+  $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+  $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
+  $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
+  $graphics.DrawImage($source, (New-Object System.Drawing.Rectangle 0, 0, $cell.Width, $cell.Height), $cell, [System.Drawing.GraphicsUnit]::Pixel)
+  $graphics.Dispose()
+
+  Clear-ConnectedBackground $bitmap
+  $bounds = Get-OpaqueBounds $bitmap
+  if ($bounds.Width -le 0 -or $bounds.Height -le 0) {
+    return $bitmap
+  }
+
+  $pad = 6
+  $x = [math]::Max(0, $bounds.X - $pad)
+  $y = [math]::Max(0, $bounds.Y - $pad)
+  $right = [math]::Min($bitmap.Width, $bounds.Right + $pad)
+  $bottom = [math]::Min($bitmap.Height, $bounds.Bottom + $pad)
+  $cropRect = [System.Drawing.Rectangle]::FromLTRB($x, $y, $right, $bottom)
+  $cropped = New-Bitmap $cropRect.Width $cropRect.Height
+  $cropGraphics = [System.Drawing.Graphics]::FromImage($cropped)
+  $cropGraphics.DrawImage($bitmap, (New-Object System.Drawing.Rectangle 0, 0, $cropRect.Width, $cropRect.Height), $cropRect, [System.Drawing.GraphicsUnit]::Pixel)
+  $cropGraphics.Dispose()
+  $bitmap.Dispose()
+  return $cropped
+}
+
+function Get-DubwoolIdleCell($directionIndex) {
+  $cells = @(
+    @(0, 0),
+    @(1, 0),
+    @(3, 1),
+    @(2, 1),
+    @(1, 2),
+    @(0, 2),
+    @(0, 1),
+    @(2, 0)
+  )
+  return $cells[$directionIndex]
+}
+
+function Draw-ReferencePoseIntoFrame($graphics, $pose, $frameX, $frameY, $frameWidth, $frameHeight, $maxDrawWidth, $maxDrawHeight, $verticalOffset) {
+  $scale = [math]::Min($maxDrawWidth / $pose.Width, $maxDrawHeight / $pose.Height)
+  $drawW = [math]::Max(1, [int][math]::Round($pose.Width * $scale))
+  $drawH = [math]::Max(1, [int][math]::Round($pose.Height * $scale))
+  $drawX = $frameX + [int][math]::Floor(($frameWidth - $drawW) / 2)
+  $drawY = $frameY + $frameHeight - $drawH - 8 + $verticalOffset
+  $dest = New-Object System.Drawing.Rectangle $drawX, $drawY, $drawW, $drawH
+
+  $state = $graphics.Save()
+  $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+  $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
+  $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
+  $graphics.DrawImage($pose, $dest, 0, 0, $pose.Width, $pose.Height, [System.Drawing.GraphicsUnit]::Pixel)
+  $graphics.Restore($state)
+}
+
+function New-Dubwool-ReferenceAnimSheet($path, $referencePath, $poseName, $frameWidth, $frameHeight, $frameCount, $directionCount, $maxDrawWidth, $maxDrawHeight) {
+  $resolvedReferencePath = Resolve-Path $referencePath
+  $source = [System.Drawing.Bitmap]::FromFile($resolvedReferencePath)
+  $bitmap = New-Bitmap ($frameWidth * $frameCount) ($frameHeight * $directionCount)
+  $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+  $graphics.Clear([System.Drawing.Color]::Transparent)
+  $poseCache = @{}
+
+  function Get-CachedPose($col, $row) {
+    $key = "$col,$row"
+    if (-not $poseCache.ContainsKey($key)) {
+      $poseCache[$key] = Get-DubwoolReferencePose $source $col $row
+    }
+    return $poseCache[$key]
+  }
+
+  for ($dir = 0; $dir -lt $directionCount; $dir++) {
+    for ($i = 0; $i -lt $frameCount; $i++) {
+      if ($poseName -eq "Sleep") {
+        $sleepCells = @(@(2, 2), @(3, 2))
+        $cell = $sleepCells[$i % $sleepCells.Count]
+        $verticalOffset = if (($i % 2) -eq 0) { 0 } else { 2 }
+      }
+      else {
+        $cell = Get-DubwoolIdleCell $dir
+        $verticalOffset = @(0, -3, 0)[$i % 3]
+      }
+
+      $pose = Get-CachedPose $cell[0] $cell[1]
+      Draw-ReferencePoseIntoFrame $graphics $pose ($i * $frameWidth) ($dir * $frameHeight) $frameWidth $frameHeight $maxDrawWidth $maxDrawHeight $verticalOffset
+    }
+  }
+
+  $graphics.Dispose()
+  $bitmap.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
+  $bitmap.Dispose()
+  foreach ($pose in $poseCache.Values) {
+    $pose.Dispose()
+  }
+  $source.Dispose()
+}
+
+function Write-Dubwool-Files($root, $speciesId, $speciesName, $referencePath) {
   $spriteDir = Join-Path $root "Sprite\$speciesId"
   New-Dir $spriteDir
 
-  New-Dubwool-AnimSheet (Join-Path $spriteDir "Idle-Anim.png") "Idle" 32 40 3 8 40 40 24 26
-  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 32 40 3 8
-  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 32 40 3 8
+  New-Dubwool-ReferenceAnimSheet (Join-Path $spriteDir "Idle-Anim.png") $referencePath "Idle" 192 192 3 8 174 174
+  New-ShadowSheet (Join-Path $spriteDir "Idle-Shadow.png") 192 192 3 8
+  New-OffsetSheet (Join-Path $spriteDir "Idle-Offsets.png") 192 192 3 8
 
-  New-Dubwool-AnimSheet (Join-Path $spriteDir "Sleep-Anim.png") "Sleep" 24 24 2 1 32 24 21 22
-  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 24 24 2 1
-  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 24 24 2 1
+  New-Dubwool-ReferenceAnimSheet (Join-Path $spriteDir "Sleep-Anim.png") $referencePath "Sleep" 192 128 2 1 176 110
+  New-ShadowSheet (Join-Path $spriteDir "Sleep-Shadow.png") 192 128 2 1
+  New-OffsetSheet (Join-Path $spriteDir "Sleep-Offsets.png") 192 128 2 1
 
   @"
 <?xml version="1.0" ?>
@@ -309,8 +492,8 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName) {
     <Anim>
       <Name>Idle</Name>
       <Index>0</Index>
-      <FrameWidth>32</FrameWidth>
-      <FrameHeight>40</FrameHeight>
+      <FrameWidth>192</FrameWidth>
+      <FrameHeight>192</FrameHeight>
       <Durations>
         <Duration>40</Duration>
         <Duration>6</Duration>
@@ -320,8 +503,8 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName) {
     <Anim>
       <Name>Sleep</Name>
       <Index>1</Index>
-      <FrameWidth>24</FrameWidth>
-      <FrameHeight>24</FrameHeight>
+      <FrameWidth>192</FrameWidth>
+      <FrameHeight>128</FrameHeight>
       <Durations>
         <Duration>30</Duration>
         <Duration>35</Duration>
@@ -333,7 +516,7 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName) {
 
   @"
 Generated local PMDO-format sprites for $speciesName.
-Design reference: Dubwool is a white Normal-type sheep based on Jacob sheep traits, with black-and-white coloring, four horns, and dark wool patches.
+Design reference: tools/sprites/references/dubwool-generated-reference.png.
 "@ | Set-Content -Encoding UTF8 (Join-Path $spriteDir "credits.txt")
 
   return $spriteDir
@@ -380,9 +563,11 @@ function Draw-Checker($graphics, $x, $y, $w, $h) {
 
 function Draw-SheetRegion($graphics, $path, $srcX, $srcY, $srcW, $srcH, $destX, $destY, $scale) {
   $bitmap = [System.Drawing.Bitmap]::FromFile($path)
-  $dest = New-Object System.Drawing.Rectangle $destX, $destY, ($srcW * $scale), ($srcH * $scale)
+  $destW = [int][math]::Round($srcW * $scale)
+  $destH = [int][math]::Round($srcH * $scale)
+  $dest = New-Object System.Drawing.Rectangle $destX, $destY, $destW, $destH
   $src = New-Object System.Drawing.Rectangle $srcX, $srcY, $srcW, $srcH
-  Draw-Checker $graphics $destX $destY ($srcW * $scale) ($srcH * $scale)
+  Draw-Checker $graphics $destX $destY $destW $destH
   $graphics.DrawImage($bitmap, $dest, $src, [System.Drawing.GraphicsUnit]::Pixel)
   $bitmap.Dispose()
 }
@@ -391,7 +576,7 @@ function Write-ComparisonPreview($root, $previewPath) {
   $resolvedPreviewPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($previewPath)
   New-Dir (Split-Path -Parent $resolvedPreviewPath)
 
-  $canvas = New-Bitmap 1050 1500
+  $canvas = New-Bitmap 1400 1800
   $graphics = [System.Drawing.Graphics]::FromImage($canvas)
   $graphics.Clear([System.Drawing.Color]::FromArgb(255, 246, 248, 250))
   $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
@@ -399,7 +584,7 @@ function Write-ComparisonPreview($root, $previewPath) {
   $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
 
   Draw-Text $graphics "PMDO Sprite Reference Pass" 36 24 28 $true
-  Draw-Text $graphics "Bulbasaur source frames beside generated Dubwool idle, sleep, and full direction atlas." 38 68 15 $false
+  Draw-Text $graphics "Bulbasaur source frames beside image-derived Dubwool frames from the generated reference PNG." 38 68 15 $false
 
   $bulbIdle = Join-Path $root "Sprite\0001\Idle-Anim.png"
   $bulbSleep = Join-Path $root "Sprite\0001\Sleep-Anim.png"
@@ -411,13 +596,13 @@ function Write-ComparisonPreview($root, $previewPath) {
   Draw-Text $graphics "Bulbasaur Sleep: PMDO source" 42 400 18 $true
   Draw-SheetRegion $graphics $bulbSleep 0 0 48 24 42 440 7
 
-  Draw-Text $graphics "Dubwool Idle: generated first row" 42 650 18 $true
-  Draw-SheetRegion $graphics $dubIdle 0 0 96 40 42 690 5
-  Draw-Text $graphics "Dubwool Sleep: generated" 42 930 18 $true
-  Draw-SheetRegion $graphics $dubSleep 0 0 48 24 42 970 7
+  Draw-Text $graphics "Dubwool Idle: image-derived first row" 42 650 18 $true
+  Draw-SheetRegion $graphics $dubIdle 0 0 576 192 42 690 1
+  Draw-Text $graphics "Dubwool Sleep: image-derived" 42 930 18 $true
+  Draw-SheetRegion $graphics $dubSleep 0 0 384 128 42 970 1
 
   Draw-Text $graphics "Dubwool Full Idle Atlas" 650 126 18 $true
-  Draw-SheetRegion $graphics $dubIdle 0 0 96 320 650 166 3
+  Draw-SheetRegion $graphics $dubIdle 0 0 576 1536 650 166 0.5
 
   $graphics.Dispose()
   $canvas.Save($resolvedPreviewPath, [System.Drawing.Imaging.ImageFormat]::Png)
@@ -431,7 +616,7 @@ if ($ExportBulbasaur) {
   Write-Output "Bulbasaur export: $zip"
 }
 
-$dubwoolDir = Write-Dubwool-Files $resolvedRoot $SpeciesId $SpeciesName
+$dubwoolDir = Write-Dubwool-Files $resolvedRoot $SpeciesId $SpeciesName $GeneratedDubwoolReferencePath
 Write-Output "$SpeciesName sprite sheets: $dubwoolDir"
 
 if ($WritePreview) {
