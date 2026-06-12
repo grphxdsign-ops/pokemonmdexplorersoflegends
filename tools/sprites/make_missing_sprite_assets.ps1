@@ -909,19 +909,19 @@ function Write-DubwoolAnimData($path, $animations, $frameSizeMap) {
   [System.IO.File]::WriteAllText($path, (($lines -join "`n") + "`n"), $utf8NoBom)
 }
 
-function Write-DubwoolAnimationReport($path, $root, $speciesId, $animations, $frameSizeMap) {
+function Write-DubwoolAnimationReport($path, $root, $speciesId, $speciesName, $referencePath, $combatReferencePath, $statusReferencePath, $dialogueReferencePath, $animations, $frameSizeMap) {
   $resolvedPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($path)
   New-Dir (Split-Path -Parent $resolvedPath)
   $lines = New-Object System.Collections.Generic.List[string]
-  $lines.Add('# Dubwool Animation File Report')
+  $lines.Add("# $speciesName Animation File Report")
   $lines.Add('')
   $lines.Add("- Generated on: $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss zzz'))")
   $lines.Add('- Template species: Bulbasaur (0001)')
-  $lines.Add("- Target species: Dubwool ($speciesId)")
-  $lines.Add('- Reference: tools/sprites/references/dubwool-generated-reference.png')
-  $lines.Add('- Combat reference: tools/sprites/references/dubwool-action-combat-reference.png')
-  $lines.Add('- Status reference: tools/sprites/references/dubwool-action-status-reference.png')
-  $lines.Add('- Dialogue reference: tools/sprites/references/dubwool-action-dialogue-reference.png')
+  $lines.Add("- Target species: $speciesName ($speciesId)")
+  $lines.Add("- Reference: $referencePath")
+  $lines.Add("- Combat reference: $combatReferencePath")
+  $lines.Add("- Status reference: $statusReferencePath")
+  $lines.Add("- Dialogue reference: $dialogueReferencePath")
   $lines.Add('- CopyOf entries preserved without physical sheets, matching Bulbasaur behavior.')
   $lines.Add('')
   $lines.Add('| Animation | Frames | Directions | Frame size | Files |')
@@ -1020,7 +1020,7 @@ function Draw-CroppedFrame($graphics, $sheetPath, $frameWidth, $frameHeight, $de
   $frame.Dispose()
 }
 
-function Write-DubwoolAnimationContactSheet($path, $root, $speciesId, $animations, $frameSizeMap) {
+function Write-DubwoolAnimationContactSheet($path, $root, $speciesId, $speciesName, $animations, $frameSizeMap) {
   $sheetAnims = @($animations | Where-Object { -not $_.CopyOf })
   $cols = 5
   $tileW = 210
@@ -1040,7 +1040,7 @@ function Write-DubwoolAnimationContactSheet($path, $root, $speciesId, $animation
   $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::NearestNeighbor
   $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::Half
   $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::None
-  Draw-Text $graphics "Dubwool Animation Coverage" $margin 24 24 $true
+  Draw-Text $graphics "$speciesName Animation Coverage" $margin 24 24 $true
   Draw-Text $graphics "$($sheetAnims.Count) physical animations generated from the reference PNG." $margin 58 13 $false
 
   $spriteDir = Join-Path $root "Sprite\$speciesId"
@@ -1083,17 +1083,17 @@ function Write-Dubwool-Files($root, $speciesId, $speciesName, $referencePath, $c
 
   Write-DubwoolAnimData (Join-Path $spriteDir "AnimData.xml") $animations $frameSizeMap
 
-@"
+  @"
 Generated local PMDO-format sprites for $speciesName.
 Design references:
-- tools/sprites/references/dubwool-generated-reference.png
-- tools/sprites/references/dubwool-action-combat-reference.png
-- tools/sprites/references/dubwool-action-status-reference.png
-- tools/sprites/references/dubwool-action-dialogue-reference.png
+- $referencePath
+- $combatReferencePath
+- $statusReferencePath
+- $dialogueReferencePath
 "@ | Set-Content -Encoding UTF8 (Join-Path $spriteDir "credits.txt")
 
-  $report = Write-DubwoolAnimationReport $reportPath $root $speciesId $animations $frameSizeMap
-  $contact = Write-DubwoolAnimationContactSheet $contactSheetPath $root $speciesId $animations $frameSizeMap
+  $report = Write-DubwoolAnimationReport $reportPath $root $speciesId $speciesName $referencePath $combatReferencePath $statusReferencePath $dialogueReferencePath $animations $frameSizeMap
+  $contact = Write-DubwoolAnimationContactSheet $contactSheetPath $root $speciesId $speciesName $animations $frameSizeMap
 
   foreach ($pose in $poseCache.Values) {
     $pose.Dispose()

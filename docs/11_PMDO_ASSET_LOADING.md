@@ -62,7 +62,7 @@ If assets are not found, the app uses the internal original placeholder atlas so
 
 ## Local Missing-Sprite Generation
 
-Use this helper to generate local PMDO-format sheets for a missing species:
+Use this helper to generate local PMDO-format action sheets for a missing species from generated reference sheets:
 
 ```text
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/sprites/make_missing_sprite_assets.ps1 -SpeciesId 0832 -SpeciesName Dubwool
@@ -81,4 +81,12 @@ pmdo/_downloads/RawAsset/Sprite/0832
 pmdo/_downloads/exports
 ```
 
-The helper currently creates idle/sleep animation, offset, shadow, `AnimData.xml`, and `credits.txt` files. It is intended as a scaffold for missing Pokémon until proper hand-authored sheets are available.
+The helper creates a Bulbasaur-template animation surface for the target species: animation, offset, shadow, `AnimData.xml`, and `credits.txt` files for each non-copy animation.
+
+For the previously missing National Dex folders, run the broad generator:
+
+```text
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/sprites/generate_missing_pokemon_sprites.ps1 -RegenerateGenerated
+```
+
+That command upgrades the locally scaffolded missing folders to full Bulbasaur-template action sets using cached reference art under `pmdo/_downloads/reference_art/official-artwork`. These generated sprite folders remain local because `pmdo/_downloads/` is ignored.
