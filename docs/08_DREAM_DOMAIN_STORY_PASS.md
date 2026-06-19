@@ -236,7 +236,7 @@ By the end of Dream Domain:
 - Arcanine remains trusted but becomes faintly unsettling to attentive players.
 - The protagonists learn that dreams and evidence can both be manipulated.
 
-## PMDO Implementation Notes
+## Standalone Implementation Notes
 
 Story flags:
 

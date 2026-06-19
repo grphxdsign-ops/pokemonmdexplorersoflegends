@@ -21,14 +21,14 @@ This includes:
 - side mission structures,
 - non-final domain incident details,
 - minor rival team behavior,
-- PMDO implementation breakdowns.
+- standalone implementation breakdowns.
 
 When making these decisions, prefer:
 
 - classic PMD emotional clarity,
 - mystery-forward foreshadowing,
 - simple but memorable domain identities,
-- future PMDO implementability,
+- future standalone implementability,
 - clean cause-and-effect for Renown and story flags.
 
 ## Ask the User Only for True Questions
@@ -46,7 +46,7 @@ Ask before changing:
 - the next domain order when it affects pacing,
 - Team Apex's final fate,
 - release strategy or legal risk posture,
-- PMDO versus another engine,
+- engine-level direction changes,
 - core progression mechanics.
 
 ## Interview Cadence
@@ -67,7 +67,7 @@ For each arc, create:
 6. Arcanine or villain-trio involvement.
 7. Key dungeon sequence.
 8. Ending state.
-9. PMDO implementation notes.
+9. Standalone implementation notes.
 10. True questions for the user.
 
 ## Current Autonomy Baseline
@@ -81,4 +81,3 @@ The assistant may assume:
 - Houndoom prefers escalation and chaos.
 - Team Apex can be ruthless without cheating in every arc.
 - The partner's desperation should build slowly and should not start in Storm.
-

@@ -3,6 +3,10 @@ SCREENSHOT/
 Saves/
 Logs/
 *.log
+.local/
+pmdo/_runtime/
+pmdo/_downloads/
+*.zip
 
 # Windows
 Thumbs.db
@@ -17,4 +21,3 @@ bin/
 obj/
 dist/
 build/
-

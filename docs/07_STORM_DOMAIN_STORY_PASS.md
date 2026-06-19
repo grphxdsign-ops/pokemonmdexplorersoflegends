@@ -211,7 +211,7 @@ By the end of the Storm arc:
 - The partner is frustrated, but not yet tempted by Team Apex.
 - Domain tensions become real political danger.
 
-## PMDO Implementation Notes
+## Standalone Implementation Notes
 
 Story flags:
 

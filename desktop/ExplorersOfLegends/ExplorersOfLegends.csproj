@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ExplorersOfLegends</RootNamespace>
+    <AssemblyName>ExplorersOfLegends</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Source\ExternalSpriteProvider.cs" />
+    <Compile Include="Source\GameData.cs" />
+    <Compile Include="Source\GameForm.cs" />
+    <Compile Include="Source\GameRenderer.cs" />
+    <Compile Include="Source\GameState.cs" />
+    <Compile Include="Source\Models.cs" />
+    <Compile Include="Source\Program.cs" />
+    <Compile Include="Source\RenderSnapshot.cs" />
+    <Compile Include="Source\SaveManager.cs" />
+    <Compile Include="Source\SmokeTest.cs" />
+    <Compile Include="Source\SpriteAtlas.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

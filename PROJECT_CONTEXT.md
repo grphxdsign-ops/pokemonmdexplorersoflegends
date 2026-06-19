@@ -12,13 +12,13 @@ The latest locked direction is now split into focused planning docs under `docs/
 Read these first:
 
 - `docs/00_CANON_LOCK.md`
-- `docs/01_PMDO_IMPLEMENTATION_PLAN.md`
+- `docs/01_STANDALONE_IMPLEMENTATION_PLAN.md`
 - `docs/02_STORY_AND_CHAPTER_PLAN.md`
 - `docs/03_PROGRESSION_SYSTEMS.md`
 - `docs/04_DOMAIN_INTERVIEW_NOTES.md`
 - `docs/05_PR_ROADMAP.md`
 
-These docs supersede older brainstorm options in this file when they conflict. The current build direction is PMDO, the Aura Domain is scrapped, Ice is renamed Frozen, and the current main villain trio is Arcanine, Houndoom, and Zoroark.
+These docs supersede older brainstorm options in this file when they conflict. The current build direction is standalone, the Aura Domain is scrapped, Ice is renamed Frozen, and the current main villain trio is Arcanine, Houndoom, and Zoroark.
 
 ## Working Title
 
@@ -563,7 +563,7 @@ Possible roles:
 
 ## Engine and Build Direction
 
-### Best fit for the full design: PMDO-style fangame
+### Current technical fit: standalone Mystery Dungeon-style fangame
 
 Best if the goal is custom systems: attribute points, hidden skill ranks, Renown, branching endings, charisma, random optional questlines, all generations, regional forms, Megas, and every domain arc.
 
@@ -697,12 +697,12 @@ Possible original-IP title directions:
 Current recommendation from the migrated chat:
 
 - Creatively, continue designing the Pokemon version for private planning/prototyping.
-- Technically, use a PMDO-style approach if the full RPG system is the priority.
+- Technically, use a standalone Mystery Dungeon-style approach, borrowing pacing and structure from PMD without relying on a PMDO Quest package.
 - Legally, decide early whether this is private/personal, patch-only with risk, or a safer public original-IP project.
 
 ## Next Design Tasks
 
-1. Decide the technical route: PMDO-style fangame, SkyTemple hack, or original-engine/original-IP path.
+1. Continue the standalone technical route and build the prototype in this repository.
 2. Lock the first 8 to 10 domains and their Living Legend successors.
 3. Choose the protagonist and partner starter pool.
 4. Define Team Apex members, personalities, and redemption conditions.
