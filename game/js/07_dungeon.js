@@ -262,6 +262,7 @@ window.EOL = window.EOL || {};
   }
 
   function finish(result) {
+    if (!S) return; // idempotent: multiple async paths may schedule the exit
     result.floorReached = S.floor;
     result.dungeon = S.def.id;
     for (const m of S.team) { m.belly = 100; m.stages = B.newStages(); m.status = null; if (m.hp <= 0) m.hp = 1; }
@@ -779,6 +780,7 @@ window.EOL = window.EOL || {};
       return;
     }
     const le = leaderEnt(); if (!le) return;
+    if (S.fl.stairs.x < 0) return; // boss floor already resolving
     le.x = S.fl.stairs.x; le.y = S.fl.stairs.y;
     S.menu = null;
     if (S.floor >= S.def.floors) {
@@ -933,7 +935,7 @@ window.EOL = window.EOL || {};
     }
     for (const it of S.groundItems) if (S.seen[it.y][it.x]) { g.fillStyle = '#60c0ff'; g.fillRect(ox + it.x * sc, oy + it.y * sc, sc, sc); }
     for (const e of S.entities.filter(e => e.mon.hp > 0)) {
-      const vis = S.seen[e.y][e.x];
+      const vis = S.seen[e.y] && S.seen[e.y][e.x];
       if (e.kind === 'ally') g.fillStyle = '#ffe060';
       else if (e.kind === 'npc') g.fillStyle = '#60ff90';
       else if (vis) g.fillStyle = '#ff5050'; else continue;

@@ -126,10 +126,11 @@ window.EOL = window.EOL || {};
     if (S.speaker && S.speaker.slug) {
       const p = EOL.sprites.portraitDrawable(S.speaker.slug, S.emo);
       if (p) {
-        // portrait window (PMD style: framed square left of text)
-        g.fillStyle = '#000'; g.fillRect(16, H - boxH - 26, 44, 44);
-        g.drawImage(p, 18, H - boxH - 24, 40, 40);
-        g.strokeStyle = '#e8e8f8'; g.strokeRect(16.5, H - boxH - 26.5, 44, 44);
+        // portrait window (PMD style: framed square perched above the text box)
+        const py = H - boxH - 56;
+        g.fillStyle = '#000'; g.fillRect(16, py, 44, 44);
+        g.drawImage(p, 18, py + 2, 40, 40);
+        g.strokeStyle = '#e8e8f8'; g.lineWidth = 2; g.strokeRect(17, py + 1, 42, 42); g.lineWidth = 1;
       }
     }
     if (S.speaker) {
