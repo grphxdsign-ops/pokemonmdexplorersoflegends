@@ -102,10 +102,20 @@ window.EOL = window.EOL || {};
   }
 
   // ---------- input routing ----------
-  let inputLock = 0;
+  let inputLock = 0, lastTouchNav = 0;
   function lockInput(ms) { inputLock = Date.now() + ms; }
-  function dispatch(btn, data) {
+  function dispatch(btn, data, source) {
     if ((btn === 'a' || btn === 'b') && Date.now() < inputLock) return;
+    // touch d-pad drives menu navigation too (keyboard nav comes from the keydown listener)
+    if (btn === 'dir' && navContext()) {
+      if (source !== 'touch') return;
+      const now = Date.now();
+      if (now - lastTouchNav < 190) return;
+      lastTouchNav = now;
+      if (data === 4 || data === 3 || data === 5) btn = 'dir-up';
+      else if (data === 0 || data === 1 || data === 7) btn = 'dir-down';
+      else return;
+    }
     if (EOL.audio && (btn === 'a')) EOL.audio.sfx('confirm');
     else if (EOL.audio && btn === 'b') EOL.audio.sfx('cancel');
     else if (EOL.audio && (btn === 'dir-up' || btn === 'dir-down')) EOL.audio.sfx('select');
@@ -139,10 +149,13 @@ window.EOL = window.EOL || {};
       return;
     }
   }
-  // arrow keys: translate to nav for menus/story
+  // arrow keys: translate to nav for menus/story/title
+  function navContext() {
+    return game.mode === 'title' || game.ui.length || ST.active() || (DG.active() && DG.menuOpen());
+  }
   window.addEventListener('keydown', e => {
-    if (e.code === 'ArrowUp' || e.code === 'KeyW') { if (game.ui.length || ST.active() || (DG.active() && game.mode === 'dungeon')) dispatch('dir-up'); }
-    if (e.code === 'ArrowDown' || e.code === 'KeyS') { if (game.ui.length || ST.active() || (DG.active() && game.mode === 'dungeon')) dispatch('dir-down'); }
+    if (e.code === 'ArrowUp' || e.code === 'KeyW') { if (navContext()) dispatch('dir-up'); }
+    if (e.code === 'ArrowDown' || e.code === 'KeyS') { if (navContext()) dispatch('dir-down'); }
   });
 
   // ---------- title ----------

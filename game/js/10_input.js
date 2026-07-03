@@ -48,12 +48,13 @@ window.EOL = window.EOL || {};
 
   // held-movement pump, called each frame by main loop
   IN.pump = function () {
-    const dir = dirFromKeys() !== null ? dirFromKeys() : (touchDir !== null ? touchDir : null);
+    const kdir = dirFromKeys();
+    const dir = kdir !== null ? kdir : (touchDir !== null ? touchDir : null);
     if (dir === null) return;
     const now = Date.now();
     if (now - lastMove < MOVE_MS) return;
     lastMove = now;
-    if (IN.dispatch) IN.dispatch('dir', dir);
+    if (IN.dispatch) IN.dispatch('dir', dir, kdir !== null ? 'key' : 'touch');
   };
 
   // ---- touch controls ----

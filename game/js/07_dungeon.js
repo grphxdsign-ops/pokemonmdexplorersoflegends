@@ -15,6 +15,7 @@ window.EOL = window.EOL || {};
 
   DG.start = function (def, team, opts) {
     opts = opts || {};
+    if (!team || !team.length) { console.error('DG.start: empty team'); return; }
     S = {
       def, team, opts,
       floor: 0,
