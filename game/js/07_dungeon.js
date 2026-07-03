@@ -766,6 +766,26 @@ window.EOL = window.EOL || {};
     pushLog('There is nothing underfoot.');
   }
 
+  // Debug/test hook: instantly resolve the current floor (used by automated tests)
+  DG.__testWin = function () {
+    if (!S || S.over) return;
+    if (S.bossActive) {
+      const le = leaderEnt(); if (!le) return;
+      for (const e of S.entities.filter(x => x.kind === 'enemy' && x.mon.hp > 0)) {
+        e.mon.hp = 1;
+        attackQuiet(le, e);
+        if (!S) return; // finished mid-loop
+      }
+      return;
+    }
+    const le = leaderEnt(); if (!le) return;
+    le.x = S.fl.stairs.x; le.y = S.fl.stairs.y;
+    S.menu = null;
+    if (S.floor >= S.def.floors) {
+      setTimeout(() => { if (S) finish({ cleared: true, jobDone: S.job && S.job.done }); }, 50);
+    } else nextFloor();
+  };
+
   // ---- rendering ----
   DG.draw = function (g, W, H) {
     if (!S) return;
