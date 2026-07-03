@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PMD: Explorers of Legends</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="screen" width="480" height="320"></canvas>
+  <div id="touchui">
+    <div id="dpad"><div class="dpad-ring"></div></div>
+    <div id="btns">
+      <button id="btnM">MENU</button>
+      <button id="btnB">B</button>
+      <button id="btnA">A</button>
+    </div>
+  </div>
+</div>
+<noscript>This game needs JavaScript enabled.</noscript>
+<!-- generated data -->
+<script src="data/data_typechart.js"></script>
+<script src="data/data_exp.js"></script>
+<script src="data/data_moves.js"></script>
+<script src="data/data_pokedex.js"></script>
+<script src="data/data_learnsets.js"></script>
+<!-- engine -->
+<script src="js/00_util.js"></script>
+<script src="js/01_sprites.js"></script>
+<script src="js/02_pokemon.js"></script>
+<script src="js/03_dungeon_gen.js"></script>
+<script src="js/04_battle.js"></script>
+<script src="js/05_items.js"></script>
+<script src="js/06_systems.js"></script>
+<script src="js/07_dungeon.js"></script>
+<script src="js/08_ground.js"></script>
+<script src="js/09_story.js"></script>
+<script src="js/10_input.js"></script>
+<!-- content -->
+<script src="js/12_content_dungeons.js"></script>
+<script src="js/13_content_story.js"></script>
+<!-- boot -->
+<script src="js/11_main.js"></script>
+</body>
+</html>
