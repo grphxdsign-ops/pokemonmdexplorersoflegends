@@ -37,6 +37,7 @@ window.EOL = window.EOL || {};
     nextFloor();
     pushLog(`${def.name}!`);
     if (S.job) pushLog(`Job: ${S.job.text}`);
+    if (EOL.audio) EOL.audio.music('dungeon');
   };
 
   function tierOf() {
@@ -110,6 +111,7 @@ window.EOL = window.EOL || {};
     if (boss.intro) pushLog(boss.intro);
     S.bossActive = true;
     S.floorFlash = 40;
+    if (EOL.audio) EOL.audio.music('tense');
   }
 
   function floorLabel() {
@@ -309,7 +311,7 @@ window.EOL = window.EOL || {};
     if (gi >= 0) {
       const it = S.groundItems[gi];
       if (it.id === 'poke') { S.groundItems.splice(gi, 1); const amt = 40 + Math.floor(Math.random() * 140); SY.state.money += amt; pushLog(`Picked up ${amt} Poke.`); }
-      else if (SY.addItem(it.id)) { S.groundItems.splice(gi, 1); pushLog(`Picked up a ${IT.name(it.id)}.`); }
+      else if (SY.addItem(it.id)) { S.groundItems.splice(gi, 1); pushLog(`Picked up a ${IT.name(it.id)}.`); if (EOL.audio) EOL.audio.sfx('item'); }
       else pushLog(`Your bag is full! You step over the ${IT.name(it.id)}.`);
     }
     // trap
@@ -433,6 +435,7 @@ window.EOL = window.EOL || {};
     else if (r.eff < 0.6) fx = ' It barely has any effect...';
     else if (r.eff < 1) fx = " It's not very effective...";
     pushLog(`${d.name} took ${dmg} damage!${r.crit ? ' Critical hit!' : ''}${fx}`);
+    if (EOL.audio) EOL.audio.sfx(r.crit ? 'crit' : 'hit');
     // secondary status
     if (mv.ec && !d.status && Math.random() < mv.ec / 100) {
       const sid = B.SECONDARY[mv.t];
@@ -510,7 +513,7 @@ window.EOL = window.EOL || {};
   }
 
   function announce(ev) {
-    if (ev.type === 'levelup') pushLog(`${ev.mon.name} grew to level ${ev.level}! (+1 AP)`), SY.state.apPool++;
+    if (ev.type === 'levelup') { pushLog(`${ev.mon.name} grew to level ${ev.level}! (+1 AP)`); SY.state.apPool++; if (EOL.audio) EOL.audio.sfx('levelup'); }
     if (ev.type === 'learned') pushLog(`${ev.mon.name} learned ${D().moves[ev.move].n}!`);
     if (ev.type === 'canlearn') pushLog(`${ev.mon.name} wants to learn ${D().moves[ev.move].n}... (manage moves in Team menu)`);
   }
@@ -532,6 +535,7 @@ window.EOL = window.EOL || {};
       SY.state.recruits++;
       pushLog(`${d.name} wants to join your team! ${d.name} joined!`);
       SY.gainSkill('Beast Handling', 8);
+      if (EOL.audio) EOL.audio.sfx('recruit');
     }
   }
 
@@ -714,6 +718,7 @@ window.EOL = window.EOL || {};
     if (m.type === 'stairs') {
       if (action === 'confirm') {
         close();
+        if (EOL.audio) EOL.audio.sfx('stairs');
         if (S.floor >= S.def.floors) {
           pushLog('You reached the end of the dungeon!');
           setTimeout(() => finish({ cleared: true, jobDone: S.job && S.job.done }), 600);

@@ -102,7 +102,13 @@ window.EOL = window.EOL || {};
   }
 
   // ---------- input routing ----------
+  let inputLock = 0;
+  function lockInput(ms) { inputLock = Date.now() + ms; }
   function dispatch(btn, data) {
+    if ((btn === 'a' || btn === 'b') && Date.now() < inputLock) return;
+    if (EOL.audio && (btn === 'a')) EOL.audio.sfx('confirm');
+    else if (EOL.audio && btn === 'b') EOL.audio.sfx('cancel');
+    else if (EOL.audio && (btn === 'dir-up' || btn === 'dir-down')) EOL.audio.sfx('select');
     if (game.mode === 'title') return titleInput(btn, data);
     if (ST.active()) {
       if (btn === 'dir') return;
@@ -289,6 +295,8 @@ window.EOL = window.EOL || {};
   // ---------- town ----------
   function enterTown(banner) {
     game.mode = 'ground';
+    lockInput(400);
+    if (EOL.audio) EOL.audio.music('town');
     for (const m of game.team) { m.hp = m.maxhp; m.belly = 100; m.status = null; m.stages = EOL.battle.newStages(); }
     SY.save(game.team);
     GR.start({
@@ -457,6 +465,7 @@ window.EOL = window.EOL || {};
             game.mode = 'story';
             ST.play([
               { t: 'bg', v: 'night' },
+              { t: 'call', fn: () => EOL.audio && EOL.audio.sfx('evolve') },
               { t: 'narr', text: 'Light wells up from the spring...' },
               { t: 'narr', text: `Congratulations! ${oldName} evolved into ${c.m.entry.name}!` },
             ], () => { game.mode = 'ground'; enterTown(); });
@@ -572,6 +581,7 @@ window.EOL = window.EOL || {};
     GR.stop();
     ui.clear();
     game.mode = 'dungeon';
+    lockInput(500);
     for (const m of game.team) { m.hp = m.maxhp; m.belly = 100; m.status = null; m.stages = EOL.battle.newStages(); }
     DG.start(def, game.team, {
       job: opts.job,
@@ -627,6 +637,7 @@ window.EOL = window.EOL || {};
         { label: 'Bag', right: `${SY.state.bag.length}/${SY.BAG_MAX}` },
         { label: 'Reserves', right: String(SY.state.reserves.length) },
         { label: 'Save' },
+        { label: `Sound: ${EOL.audio && EOL.audio.enabled ? 'ON' : 'OFF'}` },
         { label: 'Export save' },
         { label: 'Import save' },
       ],
@@ -635,8 +646,9 @@ window.EOL = window.EOL || {};
         else if (i === 1) bagMenu();
         else if (i === 2) reservesMenu();
         else if (i === 3) { SY.save(game.team); toast('Game saved!'); ui.clear(); }
-        else if (i === 4) { const s = SY.exportSave(); navigator.clipboard && navigator.clipboard.writeText(s); prompt('Copy your save code:', s); }
-        else if (i === 5) { const s = prompt('Paste save code:'); if (s && SY.importSave(s)) { game.team = SY.state.team.map(d => EOL.Mon.from(d)); ui.clear(); enterTown(); toast('Save imported!'); } else if (s) toast('Invalid save code.'); }
+        else if (i === 4) { const on = EOL.audio.toggle(); if (on) EOL.audio.music('town'); ui.clear(); toast(`Sound ${on ? 'on' : 'off'}.`); }
+        else if (i === 5) { const s = SY.exportSave(); navigator.clipboard && navigator.clipboard.writeText(s); prompt('Copy your save code:', s); }
+        else if (i === 6) { const s = prompt('Paste save code:'); if (s && SY.importSave(s)) { game.team = SY.state.team.map(d => EOL.Mon.from(d)); ui.clear(); enterTown(); toast('Save imported!'); } else if (s) toast('Invalid save code.'); }
       },
     });
   }
